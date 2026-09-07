@@ -77,7 +77,7 @@ jobs:
 
 1. https://developers.kakao.com → 내 애플리케이션 → 앱 추가
 2. 앱 키 → **JavaScript 키** copy
-3. 플랫폼 → Web → 사이트 도메인: `https://gunwooyun.github.io` (and `http://localhost:4321` for dev)
+3. 앱 키 → JavaScript 키 → **JavaScript SDK 도메인**: `https://gunwooyun.github.io` and `http://localhost:4321` (console was restructured; domains are per JS key, not per app)
 4. 제품 설정 → 카카오맵 → **활성화 설정 ON** (required since 2024-12-01; otherwise map SDK returns 403)
 5. Share uses `Kakao.Share.sendDefault` (SDK v2). After changing `og.jpg`, clear the cache at https://developers.kakao.com/tool/debugger/sharing
 

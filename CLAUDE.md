@@ -182,7 +182,7 @@ Bash("agy -p '한 문장으로 답변' --model gemini-3.7-flash-low")
 
 ### Notes
 
-- Kakao Developers: Web platform domain must be `https://gunwooyun.github.io` and 카카오맵 활성화 설정 must be ON.
+- Kakao Developers (new console): domains are registered per **JavaScript key** (앱 키 → JavaScript 키 → JavaScript SDK 도메인), not under 플랫폼 → Web. `https://gunwooyun.github.io` + `http://localhost:4321` registered 2026-09-08; 카카오맵 사용 설정 ON.
 - Repo is public: committed photos are visible on github.com — remind the user before the first real-photo commit.
 - TBD from user: event start time (currently 12:00 placeholder). Timeline dates (100일/첫돌) derive from birthDate automatically.
 - Writes to `.env*` paths are blocked by a permission rule; the example env file is `env.example`.

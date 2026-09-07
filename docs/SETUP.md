@@ -4,13 +4,25 @@
 
 ## 1. 카카오 개발자 (지도 + 카카오톡 공유)
 
+콘솔이 개편되어 도메인은 **앱이 아니라 JavaScript 키 단위**로 등록합니다 (2026-09 확인).
+
 1. https://developers.kakao.com → 내 애플리케이션 → **앱 추가** (앱 이름: 소은이 돌잔치 초대장)
-2. 앱 설정 → 앱 키 → **JavaScript 키** 복사 → `PUBLIC_KAKAO_JS_KEY`
-3. 앱 설정 → 플랫폼 → **Web** → 사이트 도메인에 아래 두 개 등록
+2. 앱 → **앱 키** → **JavaScript 키** 복사 → `PUBLIC_KAKAO_JS_KEY`
+   - REST API 키도 똑같이 32자라 헷갈리기 쉽습니다. 반드시 **JavaScript 키**여야 하며, REST 키를 넣으면 `AccessDeniedError: domain mismatched`가 납니다.
+3. 같은 화면의 JavaScript 키 설정 → **JavaScript SDK 도메인**에 아래 두 줄 등록 (끝에 `/`나 경로 없이)
    - `https://gunwooyun.github.io`
    - `http://localhost:4321` (로컬 개발용)
-4. 제품 설정 → **카카오맵** → 활성화 설정 **ON** (2024-12 이후 필수, 안 켜면 지도가 403으로 실패)
-5. 공유 미리보기 이미지(`public/og.jpg`)를 바꾼 뒤에는 https://developers.kakao.com/tool/debugger/sharing 에서 캐시 초기화
+4. 앱 → **카카오맵** → 사용 설정 **상태 ON** (안 켜면 지도가 403으로 실패). 개발자 계정에서 첫 번째로 카카오맵을 켠 앱만 무료 쿼터가 적용되고, 두 번째 앱부터는 비즈월렛 연결이 필요합니다.
+5. 설정은 즉시 반영되며 재배포는 필요 없습니다. 확인 명령:
+   ```bash
+   curl -s -o /dev/null -w "%{http_code}
+   ```
+
+" -H "Referer: https://gunwooyun.github.io/" "https://dapi.kakao.com/v2/maps/sdk.js?appkey=<JavaScript키>&autoload=false&libraries=services"
+
+```
+200이면 정상, 401이면 도메인/키 문제, 403이면 카카오맵 사용 설정 문제입니다.
+6. 공유 미리보기 이미지(`public/og.jpg`)를 바꾼 뒤에는 https://developers.kakao.com/tool/debugger/sharing 에서 캐시 초기화
 
 ## 2. 개인정보 값
 
@@ -49,18 +61,20 @@ WebP 변환과 리사이즈는 빌드가 자동으로 처리합니다. 원본이
 저장소 → Settings → Secrets and variables → Actions → **New repository secret**
 
 ```
+
 PUBLIC_KAKAO_JS_KEY
 PHONE_DAD
 PHONE_MOM
 ACCOUNT_DAD
 ACCOUNT_MOM
-```
+
+````
 
 `gh` CLI로 한 번에 넣을 수도 있습니다:
 
 ```bash
 gh secret set PUBLIC_KAKAO_JS_KEY --repo GunwooYun/gunwooyun.github.io --body "..."
-```
+````
 
 ## 5. GitHub Pages
 
