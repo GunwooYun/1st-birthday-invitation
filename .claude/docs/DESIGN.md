@@ -42,7 +42,7 @@ Mobile-first single-page invitation for Soeun's first birthday (돌잔치), host
 | Decision | Rationale | Alternatives Considered | Date |
 |----------|-----------|------------------------|------|
 | Astro 6 static | Zero-JS default, build-time WebP/srcset, one-off content page | Vite+React fork, vanilla HTML | 2026-09-07 |
-| Google Form for RSVP | Zero backend, private results | Firestore form, Formspree (50/mo limit) | 2026-09-07 |
+| No RSVP at all | User will not ask guests for attendance/headcount; removes the last external form | Google Form, Firestore form, Formspree | 2026-09-07 |
 | No backend: guestbook + doljabi poll removed | User judged the two guest-write features not worth a Firebase setup; static site + Google Form covers RSVP | Firestore Spark, Giscus, Apps Script doPost | 2026-09-07 |
 | PII via Actions secrets, never in git | Public repo/git history exposes config; copy buttons need plaintext anyway | base64 obfuscation, PIN gate | 2026-09-07 |
 | Web map links over custom schemes | `kakaomap://` unreliable in iOS KakaoTalk WebView | deep-link schemes | 2026-09-07 |
@@ -64,4 +64,4 @@ Mobile-first single-page invitation for Soeun's first birthday (돌잔치), host
 | Date | Changes |
 |------|---------|
 | 2026-09-07 | Initial research + plan v0.2 |
-| 2026-09-07 | Implemented and deployed; repo public; Firebase features removed (plan v0.4) |
+| 2026-09-07 | Implemented and deployed; repo public; Firebase features removed (plan v0.4); RSVP removed (v0.5) |

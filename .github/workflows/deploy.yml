@@ -31,7 +31,6 @@ jobs:
           PHONE_MOM: ${{ secrets.PHONE_MOM }}
           ACCOUNT_DAD: ${{ secrets.ACCOUNT_DAD }}
           ACCOUNT_MOM: ${{ secrets.ACCOUNT_MOM }}
-          RSVP_FORM_URL: ${{ secrets.RSVP_FORM_URL }}
 
   deploy:
     needs: build

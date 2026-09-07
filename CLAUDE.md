@@ -1,1 +1,188 @@
-AGENTS.md
+# Claude Code Orchestrator
+
+**멀티 에이전트 협업 프레임워크**
+
+**Claude Code**가 **deep-reasoning 서브에이전트(Claude Fable, 심층 추론)**와 **Antigravity CLI(`agy`, Gemini 모델 기반 대규모 리서치)**를 오케스트레이션하여 각 에이전트의 강점을 극대화하고 **개발 속도와 품질을 동시에 끌어올리는 구조**다.
+
+---
+
+## 왜 이 구조가 필요한가?
+
+| 에이전트                                       | 강점                               | 사용 목적                                                                                                       |
+| ---------------------------------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| **Claude Code (메인)**                         | 오케스트레이션, 사용자 대화        | 전체 통합, 태스크 관리, 의사결정                                                                                |
+| **deep-reasoning 서브에이전트 (Claude Fable)** | 깊은 추론, 설계 판단, 디버깅       | 설계 검토, 에러 분석, 트레이드오프 평가 (격리된 컨텍스트, 읽기 전용 — Edit/Write 도구 없음, Bash는 지시로 제한) |
+| **Antigravity CLI (`agy`, Gemini 모델)**       | 대규모 컨텍스트, 멀티모달, 웹 검색 | 대규모 코드 분석, 라이브러리 조사, PDF/이미지/영상 분석                                                         |
+
+**IMPORTANT**: 각 에이전트는 단독으로도 강력하지만, **의도적으로 역할을 분리했을 때 성능이 폭발**한다.
+
+---
+
+## 컨텍스트 관리 (CRITICAL)
+
+Claude Code의 최대 컨텍스트는 **200k 토큰**이지만,
+툴 정의 / 시스템 프롬프트 등을 제외하면 **실질적으로 70~100k 수준**이다.
+
+**YOU MUST** 👉 그래서 **출력이 큰 작업은 반드시 서브 에이전트 경유**가 원칙이다.
+
+### 출력 크기 기준
+
+| 출력 크기   | 사용 방식                 | 이유                        |
+| ----------- | ------------------------- | --------------------------- |
+| 1~2문장     | 메인이 직접 처리          | 오버헤드 없음               |
+| 10줄 이상   | **서브 에이전트 경유**    | 메인 컨텍스트 보호          |
+| 분석 리포트 | 서브 에이전트 → 파일 저장 | `.claude/docs/`에 영구 보존 |
+
+### 예시
+
+```
+# MUST: 설계 검토는 deep-reasoning 서브에이전트 (분석은 격리 컨텍스트에서, 요약만 반환)
+Task(subagent_type="deep-reasoning", prompt="Review this design ... Return concise summary")
+
+# MUST: 대규모 리서치는 general-purpose 서브에이전트 경유로 agy 호출 (출력 큼)
+Task(subagent_type="general-purpose", prompt="Research X via agy, save to .claude/docs/research/, return a concise summary")
+
+# OK: 짧은 agy 질문은 직접 호출 (아주 짧은 출력)
+Bash("agy -p '한 문장으로 답변' --model gemini-3.7-flash-low")
+```
+
+---
+
+## 빠른 사용 가이드(Quick Reference)
+
+### deep-reasoning 서브에이전트를 써야 할 때
+
+- 설계 판단
+  - "어떤 패턴이 맞을까?"
+  - "이 구조, 확장 가능할까?"
+- 디버깅
+  - "왜 이 에러가 나는지?"
+- 비교/선택
+  - "A vs B, 뭐가 나은지?"
+- ➡ 깊은 사고가 필요하면 deep-reasoning (메인에서 `Task(subagent_type="deep-reasoning")` 호출)
+
+→ 참고: `.claude/rules/deep-reasoning-delegation.md`
+
+### Antigravity CLI(agy)를 써야 할 때
+
+- 리서치
+  - "이거 조사해줘"
+  - "요즘 트렌드 뭐임?"
+- 대규모 분석
+  - "이 레포 전체 구조 설명해줘"
+- 멀티모달
+  - "이 PDF 요약"
+  - "이 강의 영상 핵심만 정리"
+- ➡ 많이 읽고, 넓게 볼 땐 agy
+
+→ 참고: `.claude/rules/antigravity-delegation.md`
+
+---
+
+## Workflow
+
+```
+/startproject <기능명>
+```
+
+### 진행 순서
+
+1. Antigravity CLI (agy)
+   - 리포지토리 전체 분석 (서브 에이전트)
+2. Claude
+   - 요구사항 정리
+   - 개발 계획 수립
+3. deep-reasoning 서브에이전트
+   - 설계 리뷰 및 리스크 검토
+4. Claude
+   - 실행 가능한 태스크 리스트 생성
+5. (권장)
+   - **구현 완료 후 별도 세션에서 리뷰**
+
+→ 관련 커맨드: `/startproject`, `/plan`, `/tdd` skills
+
+---
+
+## 기술 스택(Tech Stack)
+
+- **Python**
+- **uv**
+  - pip 직접 사용 ❌
+  - 속도 + 재현성 우선
+- **ruff**
+  - lint/format 통합
+- **ty**
+  - type check
+- **pytest**
+  - 테스트 표준
+- 공통 명령어
+  ```
+  poe lint
+  poe test
+  poe all
+  ```
+
+→ 참고: `.claude/rules/dev-environment.md`
+
+---
+
+## 문서구조(Documentation)
+
+| 위치                           | 내용                    |
+| ------------------------------ | ----------------------- |
+| `.claude/rules/`               | 코딩 / 보안 / 언어 규칙 |
+| `.claude/docs/DESIGN.md`       | 설계 결정 기록          |
+| `.claude/docs/research/`       | agy 조사 결과           |
+| `.claude/logs/cli-tools.jsonl` | agy 입출력 로그         |
+| `.agents/rules/AGENTS.md`      | agy용 프로젝트 컨텍스트 |
+
+---
+
+## 운영 주의사항 (Operational Notes)
+
+- **서브에이전트는 서브에이전트를 못 띄운다.** general-purpose 안에서 설계 판단이 필요해지면 결과만 보고하고, 메인이 `Task(subagent_type="deep-reasoning")`를 호출한다.
+- **`/checkpointing`(기본 모드)은 `CLAUDE.md`와 `.agents/rules/AGENTS.md`의 Session History 섹션을 덮어쓴다.** 실행 전에 커밋해 두고, 리뷰 전용 세션에서는 실행하지 않는다. `## Current Project` 블록은 Session History 섹션 **앞**에 둔다.
+- **리뷰는 별도 세션에서.** 구현한 세션은 자기 코드에 편향되므로 `git worktree add --detach ../<project>-review main`으로 격리한 새 `claude` 세션에서 "리포트 파일만 작성, 다른 파일 수정 금지"로 리뷰를 받고, 원 세션에서 반영한다. 세션 안에서의 가벼운 리뷰는 deep-reasoning 서브에이전트로 충분하다.
+- **훅 파일명을 바꾸면 `.claude/settings.json` 등록 경로를 같은 커밋에서 함께 바꾼다.** 어긋나면 PreToolUse 훅 오류로 모든 Edit이 막힌다.
+- **agy 헤드리스 호출의 빈 응답은 실패다** (soft-deny, exit 0). stderr를 버리지 말고 `--output-format json`의 `.status`/`response`로 판단한다. 파일을 읽는 호출은 템플릿 패턴의 플래그와 "파일 수정 금지" 문구를 그대로 쓴다.
+- **deep-reasoning의 읽기 전용은 도구 제거 + 지시**이지 커널 샌드박스가 아니다. 커밋 전 `git status`로 의도치 않은 변경을 확인한다.
+- **`npm create astro` 같은 스캐폴더는 루트에 `CLAUDE.md -> AGENTS.md` 심볼릭 링크를 만든다.** 스캐폴딩 결과를 루트로 옮기기 전에 `CLAUDE.md`/`AGENTS.md`를 제외하거나 백업한다 (2026-09-07에 이 파일이 한 번 덮어써져 복원했다). 루트 `AGENTS.md`는 Astro 개발 메모이며, agy용 컨텍스트는 `.agents/rules/AGENTS.md`다.
+
+---
+
+## 언어 프로토콜(Language Protocol)
+
+- **사고/코드/로그**: 영어
+- **사용자대화/설명**: 한국어
+
+---
+
+## Current Project: Soeun's 1st Birthday (돌잔치) Mobile Invitation
+
+### Context
+
+- Goal: single-page, mobile-first invitation site on GitHub Pages, shared via KakaoTalk. Live at https://gunwooyun.github.io.
+- Key docs: `.claude/docs/PLAN.md` (plan v0.5), `.claude/docs/HOSTING.md` (English deploy notes), `docs/SETUP.md` (Korean user-facing setup guide),
+  `.claude/docs/research/invitation-content-ux.md`, `.claude/docs/research/tech-stack-hosting.md`
+- Stack: Astro 7.3 (static), plain CSS, Pretendard + Gowun Dodum, PhotoSwipe, Kakao Maps/Share SDK v2 (2.7.9). Node 24, npm.
+  No backend, no forms: RSVP, guestbook and doljabi poll were all removed on 2026-09-07 at the user's request; the only external service is Kakao.
+- Hosting: user site from PUBLIC repo `GunwooYun/gunwooyun.github.io` (Free plan rejected private Pages). Deploy = GitHub Actions on push to main.
+- Event: 2027-05-09 (Sun) 빕스 은평점 (롯데몰 은평점 3층, not yet booked — venue may change; edit only the EVENT/VENUE blocks in `src/config/invitation.ts`).
+  Baby born 2026-05-11; parents 윤건우/박서희. Real photos ~2027-05-03; pastel placeholders via `npm run placeholders` until then.
+- Secrets (GitHub Actions): PUBLIC_KAKAO_JS_KEY, PHONE_DAD, PHONE_MOM, ACCOUNT_DAD, ACCOUNT_MOM. None registered yet; sections/buttons auto-hide when empty.
+- The Python/uv/ruff/pytest toolchain in this file does NOT apply to this project. Use `npm run check` / `npm run build` / `npm run format`.
+
+### Decisions
+
+- Astro over Vite+React/vanilla: zero-JS default + build-time image pipeline for a one-off content page.
+- PII (phones, account numbers) never committed: injected via GitHub Actions secrets at build time.
+- Dropped: PIN gate, BGM, base64 obfuscation (no real security, adds friction); Firebase guestbook/doljabi and Google Form RSVP (user does not want to collect anything from guests).
+- Map links use web URLs (map.kakao.com/link/search/...), not custom schemes (unreliable in iOS KakaoTalk WebView); marker via Kakao Places keyword search, coordinates only as fallback.
+- Deploy: actions/checkout@v7 → withastro/action@v6 (npm) → actions/deploy-pages@v5.
+
+### Notes
+
+- Kakao Developers: Web platform domain must be `https://gunwooyun.github.io` and 카카오맵 활성화 설정 must be ON.
+- Repo is public: committed photos are visible on github.com — remind the user before the first real-photo commit.
+- TBD from user: event start time (currently 12:00 placeholder). Timeline dates (100일/첫돌) derive from birthDate automatically.
+- Writes to `.env*` paths are blocked by a permission rule; the example env file is `env.example`.

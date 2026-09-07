@@ -4,3 +4,5 @@ node_modules
 .claude
 .agents
 package-lock.json
+CLAUDE.md
+AGENTS.md

@@ -19,7 +19,6 @@ export default defineConfig({
       // Format: "은행명|계좌번호|예금주"
       ACCOUNT_DAD: envField.string({ context: 'server', access: 'secret', optional: true }),
       ACCOUNT_MOM: envField.string({ context: 'server', access: 'secret', optional: true }),
-      RSVP_FORM_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
     },
   },
 });

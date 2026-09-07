@@ -1,6 +1,6 @@
 # Implementation Plan: Soeun's 1st Birthday (돌잔치) Mobile Invitation
 
-> v0.4 — 2026-09-07 (implemented; guestbook + doljabi poll removed at the user's request → no Firebase, no backend). Based on `.claude/docs/research/invitation-content-ux.md`,
+> v0.5 — 2026-09-07 (implemented; guestbook, doljabi poll and RSVP removed at the user's request → no backend, no forms; only Kakao SDK remains external). Based on `.claude/docs/research/invitation-content-ux.md`,
 > `.claude/docs/research/tech-stack-hosting.md`, and a deep-reasoning design review.
 > Hosting steps live in `.claude/docs/HOSTING.md`.
 
@@ -16,7 +16,7 @@ single maintainer, must be fast in the KakaoTalk in-app browser and iOS Safari.
 |---|-----------|---------|
 | A1 | Hosting target | **Confirmed**: user site `https://gunwooyun.github.io` (repo `GunwooYun/gunwooyun.github.io`, no `base`) |
 | A2 | Guest count | 50–150 |
-| A3 | Interactive features | **Revised**: RSVP (Google Form) + account numbers only. Guestbook and doljabi poll dropped (user chose to avoid Firebase). |
+| A3 | Interactive features | **Revised (v0.5)**: account numbers with copy only. RSVP, guestbook and doljabi poll all dropped — the user will not ask guests for attendance/headcount. |
 | A4 | Repo visibility | **Revised**: public repo (Free plan rejected private Pages). PII injected via secrets, never committed; photos in the repo are public. |
 | A5 | Account numbers | Included behind an accordion, injected at build time from a secret (never committed) |
 | A6 | Custom domain | Not needed |
@@ -33,7 +33,7 @@ single maintainer, must be fast in the KakaoTalk in-app browser and iOS Safari.
 | Scroll animation | IntersectionObserver + CSS classes (~30 lines) | Avoid AOS/Framer weight. |
 | Map | Kakao Maps JS SDK (domain-whitelisted JS key, 카카오맵 활성화 설정 ON) + **web** links `https://map.kakao.com/link/to/...` and Naver web directions | Custom schemes (`kakaomap://`, `nmap://`) are unreliable in the iOS KakaoTalk WebView; web links open the app when installed. |
 | Share | Kakao JS SDK v2 `Kakao.Share.sendDefault` + Open Graph tags + link copy | v1 `Kakao.Link` is EOL 2026-12-31. `og.jpg` (1200×630) in `public/`, absolute URL via `new URL(path, Astro.site)`. |
-| RSVP | Google Form button → Google Sheets | Zero backend, private results. |
+| RSVP | **Removed** (v0.5) | User does not want to ask guests for attendance or headcount. |
 | Guestbook / doljabi poll | **Removed** (v0.4) | User decided the two guest-write features are not worth a backend; optional doljabi/greeting questions can live in the RSVP Google Form instead. |
 | Images | `formats: ['webp']` only, gallery ≤ 1080 px, hero preloaded | AVIF slows CI for negligible gain at this size. |
 | Deploy | GitHub Actions: `actions/checkout@v7` → `withastro/action@v6` (npm) → `actions/deploy-pages@v5` | Official pattern; lockfile committed. |
@@ -53,7 +53,6 @@ Dropped from MVP: PIN gate (friction for elderly relatives, zero real security),
 6. **Gallery** — 6–12 photos, lazy, PhotoSwipe lightbox
 7. **Venue & map** — Kakao map, address copy, Kakao/Naver web directions links
 8. **Transport & parking**
-9. **RSVP** — Google Form button with deadline
 10. **Gift note / accounts** — "축의금 대신 마음만" text or accordion with account numbers + copy
 11. **Share / footer** — KakaoTalk share, link copy
 
@@ -76,7 +75,7 @@ All copy/dates/URLs/photo refs come from `src/config/invitation.ts`; PII fields 
 
 ## 7. Implementation steps
 
-> Status 2026-09-07: Steps 0–8 implemented; repo made public; site live at https://gunwooyun.github.io. Firebase-backed guestbook/doljabi removed. Remaining: Kakao app + Google Form + secrets by the user (docs/SETUP.md), real photos (~2027-05-03), venue confirmation, device QA.
+> Status 2026-09-07: Steps 0–8 implemented; repo made public; site live at https://gunwooyun.github.io. Firebase-backed guestbook/doljabi removed. Remaining: Kakao app + secrets by the user (docs/SETUP.md), real photos (~2027-05-03), venue confirmation, device QA.
 
 | Step | Work | Verification |
 |------|------|--------------|

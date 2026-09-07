@@ -9,7 +9,7 @@
 //   `npm run placeholders` after changing these, until a real image
 //   replaces public/og.jpg.
 //
-// Private values (phones, accounts, RSVP URL) come from environment
+// Private values (phones, accounts) come from environment
 // variables — see astro.config.mjs and docs/SETUP.md.
 // =====================================================================
 

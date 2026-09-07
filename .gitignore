@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # local env
 .env.local
+
+# stale symlink left by the Astro scaffold (safe to delete)
+.claude-md-astro-symlink.bak
