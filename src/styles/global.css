@@ -1,7 +1,9 @@
 :root {
-  --bg-page: #f3ede8;
-  --bg: #fff8f3;
-  --surface: #ffffff;
+  --bg-page: #fbf4f6;
+  --bg: #ffffff;
+  --surface: #fff7f9;
+  --tint: #fff7f9;
+  --mint: #eef7f1;
   --ink: #4b3f3a;
   --muted: #8b7b76;
   --accent: #f2a1ac;
@@ -10,7 +12,7 @@
   --sage: #b7d9c4;
   --sage-soft: #e9f3ec;
   --peach: #ffd9a8;
-  --line: #f0e4de;
+  --line: #f3e6ea;
   --radius: 18px;
   --shadow: 0 10px 30px rgba(75, 63, 58, 0.08);
   --font-body:
@@ -33,7 +35,8 @@ html {
 
 body {
   margin: 0;
-  background: var(--bg-page);
+  background-color: var(--bg-page);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Ccircle cx='18' cy='22' r='3' fill='%23f7b7c3' opacity='.55'/%3E%3Ccircle cx='86' cy='14' r='2.2' fill='%23b7d9c4' opacity='.6'/%3E%3Ccircle cx='104' cy='70' r='3' fill='%23ffd9a8' opacity='.6'/%3E%3Ccircle cx='40' cy='92' r='2.2' fill='%23d9e4f5' opacity='.7'/%3E%3Cpath d='M64 48 l2.2 4.6 5 .7 -3.6 3.5 .9 5 -4.5 -2.4 -4.5 2.4 .9 -5 -3.6 -3.5 5 -.7z' fill='%23f7b7c3' opacity='.45'/%3E%3C/svg%3E");
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 16px;
@@ -60,6 +63,7 @@ a {
 }
 
 .app {
+  position: relative;
   max-width: var(--max-width);
   margin: 0 auto;
   background: var(--bg);
@@ -78,7 +82,11 @@ a {
 }
 
 .section--tint {
-  background: var(--surface);
+  background: var(--tint);
+}
+
+.section--mint {
+  background: var(--mint);
 }
 
 .section__eyebrow {
@@ -113,7 +121,7 @@ a {
   padding: 10px 18px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--surface);
+  background: #ffffff;
   color: var(--ink);
   font-size: 14px;
   font-weight: 600;
@@ -149,7 +157,7 @@ a {
 }
 
 .card {
-  background: var(--surface);
+  background: #ffffff;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 20px;

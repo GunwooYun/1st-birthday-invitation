@@ -1,0 +1,29 @@
+---
+// Small ornament between sections: a dotted line with the horse mascot in the middle.
+import Horse from './Horse.astro';
+interface Props {
+  flip?: boolean;
+}
+const { flip = false } = Astro.props;
+---
+
+<div class="divider" aria-hidden="true">
+  <span class="divider__line"></span>
+  <Horse size={56} flip={flip} />
+  <span class="divider__line"></span>
+</div>
+
+<style>
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 8px 40px;
+    background: var(--bg);
+  }
+  .divider__line {
+    flex: 1;
+    height: 0;
+    border-top: 2px dotted var(--accent-soft);
+  }
+</style>

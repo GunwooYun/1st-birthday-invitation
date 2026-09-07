@@ -1,5 +1,6 @@
 ---
 import { invitation } from '../config/invitation';
+import Horse from './Horse.astro';
 
 const { share, baby, parents } = invitation;
 const siteUrl = Astro.site ?? new URL('http://localhost:4321');
@@ -8,6 +9,7 @@ const ogImage = new URL(share.ogImage, pageUrl).toString();
 ---
 
 <section class="section reveal share">
+  <div class="share__mascot"><Horse size={120} variant="balloon" /></div>
   <p class="share__thanks">{'소은이의 첫 생일을 함께 축하해 주셔서\n진심으로 감사합니다.'}</p>
   <div class="share__actions">
     <button
@@ -32,6 +34,11 @@ const ogImage = new URL(share.ogImage, pageUrl).toString();
 <style>
   .share {
     padding-bottom: 80px;
+  }
+  .share__mascot {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
   }
   .share__thanks {
     margin: 0 0 24px;

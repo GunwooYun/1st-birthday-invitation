@@ -2,21 +2,25 @@
 import { Picture } from 'astro:assets';
 import hero from '../assets/photos/hero.jpg';
 import { invitation } from '../config/invitation';
+import Horse from './Horse.astro';
 
 const { event, baby, venue } = invitation;
 ---
 
 <section class="cover">
   <div class="cover__media">
-    <Picture
-      src={hero}
-      formats={['webp']}
-      widths={[480, 860, 1080]}
-      sizes="(max-width: 430px) 100vw, 430px"
-      priority
-      alt={`${baby.fullName} 대표 사진`}
-      class="cover__img"
-    />
+    <div class="cover__frame">
+      <Picture
+        src={hero}
+        formats={['webp']}
+        widths={[480, 860, 1080]}
+        sizes="(max-width: 430px) 100vw, 430px"
+        priority
+        alt={`${baby.fullName} 대표 사진`}
+        class="cover__img"
+      />
+      <div class="cover__mascot"><Horse size={96} variant="party" /></div>
+    </div>
   </div>
   <div class="cover__text">
     <p class="cover__eyebrow">{event.subtitle}</p>
@@ -34,10 +38,19 @@ const { event, baby, venue } = invitation;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background: linear-gradient(180deg, #fff1e8 0%, var(--bg) 100%);
+    background: linear-gradient(180deg, #fff2f5 0%, #ffffff 70%);
   }
   .cover__media {
     padding: 48px 32px 0;
+  }
+  .cover__frame {
+    position: relative;
+  }
+  .cover__mascot {
+    position: absolute;
+    right: -14px;
+    bottom: -22px;
+    filter: drop-shadow(0 6px 10px rgba(75, 63, 58, 0.15));
   }
   .cover__media :global(picture),
   .cover__media :global(img) {
@@ -49,6 +62,7 @@ const { event, baby, venue } = invitation;
     object-fit: cover;
     border-radius: 200px 200px var(--radius) var(--radius);
     box-shadow: var(--shadow);
+    border: 6px solid #ffffff;
   }
   .cover__text {
     padding: 28px 24px 44px;
