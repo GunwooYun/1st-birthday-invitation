@@ -13,7 +13,8 @@
     "check": "astro check",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "placeholders": "node scripts/make-placeholders.mjs"
+    "placeholders": "node scripts/make-placeholders.mjs",
+    "og": "node scripts/make-og.mjs"
   },
   "dependencies": {
     "astro": "^7.3.1",

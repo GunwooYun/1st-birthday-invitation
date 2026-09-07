@@ -1,7 +1,8 @@
 // Generates pastel placeholder photos until real photos are available.
-// Run: node scripts/make-placeholders.mjs
-// Output: src/assets/photos/*.jpg and public/og.jpg (overwrites existing files).
-import { mkdir, writeFile } from 'node:fs/promises';
+// Run: node scripts/make-placeholders.mjs [--force]
+// Output: src/assets/photos/*.jpg and public/og.jpg.
+// Existing files are left untouched (so real photos are never overwritten) unless --force is given.
+import { access, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
 
@@ -49,7 +50,22 @@ function placeholderSvg({ width, height, label, sub, palette }) {
 </svg>`;
 }
 
+const FORCE = process.argv.includes('--force');
+
+async function exists(file) {
+  try {
+    await access(file);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function render(file, spec) {
+  if (!FORCE && (await exists(file))) {
+    console.log('kept  ', path.relative(process.cwd(), file), '(exists; use --force to overwrite)');
+    return;
+  }
   const svg = Buffer.from(placeholderSvg(spec));
   await sharp(svg).jpeg({ quality: JPEG_QUALITY, mozjpeg: true }).toFile(file);
   console.log('wrote', path.relative(process.cwd(), file));
