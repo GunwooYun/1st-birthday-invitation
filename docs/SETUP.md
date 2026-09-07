@@ -63,6 +63,13 @@
 WebP 변환과 리사이즈는 빌드가 자동으로 처리합니다. 원본이 5MB를 넘으면 미리 줄여 두세요.
 날짜·문구·출생일·행사 시간은 `src/config/invitation.ts`에서 수정합니다.
 
+## 5-1. 장소·날짜 변경 (예약 확정 후)
+
+`src/config/invitation.ts` 맨 위의 **`EVENT`**(일시)와 **`VENUE`**(장소명, 층, 주소, 전화, 지도 검색어, 교통 안내) 블록만 고치면
+커버·달력·지도·길찾기·카카오톡 공유 문구·메타 설명이 모두 따라 바뀝니다.
+`mapKeyword`는 카카오맵에서 검색했을 때 정확히 그 매장이 나오는 이름으로 적어 주세요.
+임시 `public/og.jpg`의 문구는 `scripts/make-placeholders.mjs`의 `OG_SUBTITLE`을 고치고 `npm run placeholders`로 다시 만듭니다 (실제 이미지로 바꾼 뒤에는 불필요).
+
 ## 6. GitHub 시크릿
 
 저장소 → Settings → Secrets and variables → Actions → **New repository secret**

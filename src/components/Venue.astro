@@ -2,8 +2,8 @@
 import SectionTitle from './SectionTitle.astro';
 import { invitation } from '../config/invitation';
 
-const { venue, transport } = invitation;
-const encodedKeyword = encodeURIComponent(venue.keyword);
+const { venue } = invitation;
+const encodedKeyword = encodeURIComponent(venue.mapKeyword);
 const kakaoMapUrl = `https://map.kakao.com/link/search/${encodedKeyword}`;
 const naverMapUrl = `https://map.naver.com/p/search/${encodedKeyword}`;
 ---
@@ -20,7 +20,7 @@ const naverMapUrl = `https://map.naver.com/p/search/${encodedKeyword}`;
     <a class="btn" href={`tel:${venue.tel}`}>📞 매장 전화</a>
   </div>
 
-  <div class="venue__map" data-kakao-map data-keyword={venue.keyword} data-lat={venue.lat} data-lng={venue.lng}>
+  <div class="venue__map" data-kakao-map data-keyword={venue.mapKeyword} data-lat={venue.lat} data-lng={venue.lng}>
     <p class="venue__map-fallback">지도를 불러오는 중…</p>
   </div>
 
@@ -31,7 +31,7 @@ const naverMapUrl = `https://map.naver.com/p/search/${encodedKeyword}`;
 
   <dl class="venue__transport card">
     {
-      transport.map((t) => (
+      venue.transport.map((t) => (
         <div class="venue__transport-row">
           <dt>{t.label}</dt>
           <dd>{t.detail}</dd>

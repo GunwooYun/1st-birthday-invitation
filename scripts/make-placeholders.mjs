@@ -5,6 +5,8 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
 
+// Keep in sync with src/config/invitation.ts (EVENT/VENUE) until a real og.jpg replaces the placeholder.
+const OG_SUBTITLE = '2027년 5월 9일 일요일 · 빕스 은평점';
 const OUT_DIR = path.resolve('src/assets/photos');
 const PUBLIC_DIR = path.resolve('public');
 const JPEG_QUALITY = 82;
@@ -75,7 +77,7 @@ await render(path.join(PUBLIC_DIR, 'og.jpg'), {
   width: 1200,
   height: 630,
   label: '소은이의 첫 번째 생일에 초대합니다',
-  sub: '2027년 5월 9일 일요일 · 빕스 은평롯데점',
+  sub: OG_SUBTITLE,
   palette: PALETTES[0],
 });
 await writeFile(path.join(OUT_DIR, '.gitkeep'), '');
