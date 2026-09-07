@@ -1,0 +1,60 @@
+---
+import { invitation } from '../config/invitation';
+
+const { share, baby, parents } = invitation;
+const siteUrl = Astro.site ?? new URL('http://localhost:4321');
+const pageUrl = new URL(import.meta.env.BASE_URL, siteUrl).toString();
+const ogImage = new URL(share.ogImage, pageUrl).toString();
+---
+
+<section class="section reveal share">
+  <p class="share__thanks">{'소은이의 첫 생일을 함께 축하해 주셔서\n진심으로 감사합니다.'}</p>
+  <div class="share__actions">
+    <button
+      class="btn btn--block share__kakao"
+      type="button"
+      data-kakao-share
+      data-title={share.title}
+      data-description={share.description}
+      data-image={ogImage}
+      data-url={pageUrl}
+      data-button-label={share.kakaoButtonLabel}
+    >
+      💬 카카오톡으로 공유하기
+    </button>
+    <button class="btn btn--block" type="button" data-copy-link>🔗 초대장 링크 복사</button>
+  </div>
+  <p class="share__footer">
+    {parents.dad} · {parents.mom} · {baby.name}
+  </p>
+</section>
+
+<style>
+  .share {
+    padding-bottom: 80px;
+  }
+  .share__thanks {
+    margin: 0 0 24px;
+    white-space: pre-line;
+    font-family: var(--font-display);
+    font-size: 16px;
+  }
+  .share__actions {
+    display: grid;
+    gap: 8px;
+  }
+  .share__kakao {
+    background: #fee500;
+    border-color: #fee500;
+    color: #191919;
+  }
+  .share__kakao[hidden] {
+    display: none;
+  }
+  .share__footer {
+    margin: 40px 0 0;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+</style>

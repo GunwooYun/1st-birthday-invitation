@@ -1,0 +1,107 @@
+---
+import SectionTitle from './SectionTitle.astro';
+import { invitation } from '../config/invitation';
+
+const { doljabi } = invitation;
+---
+
+<section class="section section--tint reveal" data-doljabi>
+  <SectionTitle eyebrow="Doljabi" title={doljabi.title} />
+  <p class="section__lead">{doljabi.description}</p>
+  <ul class="doljabi">
+    {
+      doljabi.items.map((item) => (
+        <li class="doljabi__row" data-doljabi-item={item.id}>
+          <button class="doljabi__btn" type="button" data-doljabi-item={item.id}>
+            <span class="doljabi__emoji" aria-hidden="true">
+              {item.emoji}
+            </span>
+            <span class="doljabi__text">
+              <span class="doljabi__label">{item.label}</span>
+              <span class="doljabi__meaning">{item.meaning}</span>
+            </span>
+            <span class="doljabi__percent" data-percent />
+          </button>
+          <span class="doljabi__bar" data-bar />
+        </li>
+      ))
+    }
+  </ul>
+  <p class="doljabi__total" data-total></p>
+</section>
+
+<style>
+  .doljabi {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+  .doljabi__row {
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--surface);
+    overflow: hidden;
+  }
+  .doljabi__btn {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 36px 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 0;
+    background: transparent;
+    text-align: left;
+  }
+  .doljabi__btn[disabled] {
+    cursor: default;
+  }
+  .doljabi__emoji {
+    font-size: 22px;
+    text-align: center;
+  }
+  .doljabi__text {
+    display: flex;
+    flex-direction: column;
+  }
+  .doljabi__label {
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .doljabi__meaning {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .doljabi__percent {
+    font-size: 13px;
+    color: var(--accent-deep);
+    font-variant-numeric: tabular-nums;
+  }
+  .doljabi__bar {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0;
+    background: var(--accent-soft);
+    transition: width 0.6s ease;
+  }
+  .doljabi__row.is-mine {
+    border-color: var(--accent);
+  }
+  .doljabi__row.is-mine .doljabi__bar {
+    background: var(--peach);
+  }
+  .doljabi__total {
+    margin: 16px 0 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  [data-doljabi]:not(.has-results) .doljabi__percent,
+  [data-doljabi]:not(.has-results) .doljabi__bar {
+    display: none;
+  }
+</style>

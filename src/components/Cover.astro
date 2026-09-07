@@ -1,0 +1,77 @@
+---
+import { Picture } from 'astro:assets';
+import hero from '../assets/photos/hero.jpg';
+import { invitation } from '../config/invitation';
+
+const { event, baby, venue } = invitation;
+---
+
+<section class="cover">
+  <div class="cover__media">
+    <Picture
+      src={hero}
+      formats={['webp']}
+      widths={[480, 860, 1080]}
+      sizes="(max-width: 430px) 100vw, 430px"
+      priority
+      alt={`${baby.fullName} 대표 사진`}
+      class="cover__img"
+    />
+  </div>
+  <div class="cover__text">
+    <p class="cover__eyebrow">{event.subtitle}</p>
+    <h1 class="cover__title">{event.title}</h1>
+    <p class="cover__date">{event.dateLabel} · {event.timeLabel}</p>
+    <p class="cover__venue">{venue.name}</p>
+  </div>
+</section>
+
+<style>
+  .cover {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: linear-gradient(180deg, #fff1e8 0%, var(--bg) 100%);
+  }
+  .cover__media {
+    padding: 48px 32px 0;
+  }
+  .cover__media :global(picture),
+  .cover__media :global(img) {
+    width: 100%;
+    height: 100%;
+  }
+  .cover__media :global(img) {
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: 200px 200px var(--radius) var(--radius);
+    box-shadow: var(--shadow);
+  }
+  .cover__text {
+    padding: 28px 24px 44px;
+    text-align: center;
+  }
+  .cover__eyebrow {
+    margin: 0 0 6px;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent-deep);
+  }
+  .cover__title {
+    margin: 0 0 14px;
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1.3;
+  }
+  .cover__date,
+  .cover__venue {
+    margin: 0;
+    color: var(--muted);
+    font-size: 15px;
+  }
+</style>

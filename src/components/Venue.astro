@@ -1,0 +1,104 @@
+---
+import SectionTitle from './SectionTitle.astro';
+import { invitation } from '../config/invitation';
+
+const { venue, transport } = invitation;
+const encodedKeyword = encodeURIComponent(venue.keyword);
+const kakaoMapUrl = `https://map.kakao.com/link/search/${encodedKeyword}`;
+const naverMapUrl = `https://map.naver.com/p/search/${encodedKeyword}`;
+---
+
+<section class="section section--tint reveal">
+  <SectionTitle eyebrow="Location" title="오시는 길" />
+  <p class="venue__name">{venue.name}</p>
+  <p class="venue__floor">{venue.floor}</p>
+  <p class="venue__address">{venue.address}</p>
+  <div class="venue__actions">
+    <button class="btn" type="button" data-copy={venue.address} data-copy-label="주소가 복사되었어요">
+      📋 주소 복사
+    </button>
+    <a class="btn" href={`tel:${venue.tel}`}>📞 매장 전화</a>
+  </div>
+
+  <div class="venue__map" data-kakao-map data-keyword={venue.keyword} data-lat={venue.lat} data-lng={venue.lng}>
+    <p class="venue__map-fallback">지도를 불러오는 중…</p>
+  </div>
+
+  <div class="venue__links">
+    <a class="btn btn--block" href={kakaoMapUrl} target="_blank" rel="noreferrer">카카오맵으로 길찾기</a>
+    <a class="btn btn--block" href={naverMapUrl} target="_blank" rel="noreferrer">네이버지도로 길찾기</a>
+  </div>
+
+  <dl class="venue__transport card">
+    {
+      transport.map((t) => (
+        <div class="venue__transport-row">
+          <dt>{t.label}</dt>
+          <dd>{t.detail}</dd>
+        </div>
+      ))
+    }
+  </dl>
+</section>
+
+<style>
+  .venue__name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 20px;
+  }
+  .venue__floor,
+  .venue__address {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .venue__actions {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 16px 0 20px;
+  }
+  .venue__map {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--sage-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .venue__map[hidden] {
+    display: none;
+  }
+  .venue__map-fallback {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .venue__links {
+    display: grid;
+    gap: 8px;
+    margin: 16px 0 24px;
+  }
+  .venue__transport {
+    margin: 0;
+    display: grid;
+    gap: 14px;
+  }
+  .venue__transport-row {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 10px;
+    font-size: 14px;
+  }
+  .venue__transport dt {
+    font-weight: 700;
+    color: var(--accent-deep);
+  }
+  .venue__transport dd {
+    margin: 0;
+    color: var(--ink);
+  }
+</style>

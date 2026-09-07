@@ -1,0 +1,77 @@
+---
+import { PHONE_DAD, PHONE_MOM } from 'astro:env/server';
+import SectionTitle from './SectionTitle.astro';
+import { invitation } from '../config/invitation';
+
+const { baby, parents } = invitation;
+const contacts = [
+  { role: '아빠', name: parents.dad, phone: PHONE_DAD },
+  { role: '엄마', name: parents.mom, phone: PHONE_MOM },
+].filter((c) => Boolean(c.phone));
+
+const [year, month, day] = baby.birthDate.split('-');
+const birthLabel = `${year}년 ${Number(month)}월 ${Number(day)}일${baby.birthTime ? ` ${baby.birthTime}` : ''}`;
+---
+
+<section class="section section--tint reveal">
+  <SectionTitle eyebrow="Our Baby" title="소중한 우리 아이" />
+  <div class="card profile__card">
+    <p class="profile__name">{baby.fullName}</p>
+    <p class="profile__birth">{birthLabel} 출생</p>
+    <p class="profile__parents">아빠 {parents.dad} · 엄마 {parents.mom}</p>
+  </div>
+  {
+    contacts.length > 0 && (
+      <div class="profile__contacts">
+        {contacts.map((c) => (
+          <div class="profile__contact">
+            <span class="profile__role">
+              {c.role} {c.name}
+            </span>
+            <a class="btn" href={`tel:${c.phone}`} aria-label={`${c.role}에게 전화`}>
+              📞 전화
+            </a>
+            <a class="btn" href={`sms:${c.phone}`} aria-label={`${c.role}에게 문자`}>
+              💬 문자
+            </a>
+          </div>
+        ))}
+      </div>
+    )
+  }
+</section>
+
+<style>
+  .profile__card {
+    text-align: center;
+  }
+  .profile__name {
+    margin: 0 0 6px;
+    font-family: var(--font-display);
+    font-size: 26px;
+  }
+  .profile__birth,
+  .profile__parents {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .profile__contacts {
+    margin-top: 20px;
+    display: grid;
+    gap: 10px;
+  }
+  .profile__contact {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 8px;
+    text-align: left;
+    font-size: 14px;
+  }
+  .profile__contact .btn {
+    min-height: 40px;
+    padding: 6px 14px;
+    font-size: 13px;
+  }
+</style>

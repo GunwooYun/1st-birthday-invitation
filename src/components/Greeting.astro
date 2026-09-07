@@ -1,0 +1,38 @@
+---
+import SectionTitle from './SectionTitle.astro';
+import { invitation } from '../config/invitation';
+
+const { greeting, parents, baby } = invitation;
+---
+
+<section class="section reveal">
+  <SectionTitle eyebrow="Invitation" title="초대합니다" />
+  {greeting.map((paragraph) => <p class="greeting__p">{paragraph}</p>)}
+  <p class="greeting__from">
+    {parents.dad} · {parents.mom}<span class="greeting__sep">의 딸</span>
+    <strong>{baby.name}</strong>
+  </p>
+</section>
+
+<style>
+  .greeting__p {
+    margin: 0 0 18px;
+    white-space: pre-line;
+    font-size: 15px;
+    line-height: 1.9;
+  }
+  .greeting__from {
+    margin: 32px 0 0;
+    font-family: var(--font-display);
+    font-size: 17px;
+  }
+  .greeting__sep {
+    margin: 0 6px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .greeting__from strong {
+    font-weight: 400;
+    color: var(--accent-deep);
+  }
+</style>

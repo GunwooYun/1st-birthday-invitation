@@ -1,0 +1,18 @@
+---
+import { RSVP_FORM_URL } from 'astro:env/server';
+import SectionTitle from './SectionTitle.astro';
+
+const formUrl = RSVP_FORM_URL ?? '';
+---
+
+{
+  formUrl && (
+    <section class="section reveal">
+      <SectionTitle eyebrow="RSVP" title="참석 여부 알려주기" />
+      <p class="section__lead">{'식사 준비를 위해 참석 여부와 인원을\n미리 알려주시면 큰 도움이 됩니다.'}</p>
+      <a class="btn btn--primary btn--block" href={formUrl} target="_blank" rel="noreferrer">
+        참석 여부 남기기
+      </a>
+    </section>
+  )
+}

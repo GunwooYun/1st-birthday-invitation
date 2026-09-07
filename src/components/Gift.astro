@@ -1,0 +1,104 @@
+---
+import { ACCOUNT_DAD, ACCOUNT_MOM } from 'astro:env/server';
+import SectionTitle from './SectionTitle.astro';
+import { invitation } from '../config/invitation';
+
+type Account = { role: string; bank: string; number: string; holder: string };
+
+function parseAccount(role: string, raw: string | undefined): Account | null {
+  if (!raw) return null;
+  const [bank, number, holder] = raw.split('|').map((part) => part.trim());
+  if (!bank || !number || !holder) return null;
+  return { role, bank, number, holder };
+}
+
+const accounts = [parseAccount('아빠', ACCOUNT_DAD), parseAccount('엄마', ACCOUNT_MOM)].filter(
+  (account): account is Account => account !== null,
+);
+---
+
+{
+  accounts.length > 0 && (
+    <section class="section reveal">
+      <SectionTitle eyebrow="With Love" title="마음 전하실 곳" />
+      <p class="section__lead">{invitation.gift.note}</p>
+      <details class="gift card">
+        <summary class="gift__summary">계좌번호 보기</summary>
+        <ul class="gift__list">
+          {accounts.map((account) => (
+            <li class="gift__item">
+              <div>
+                <p class="gift__role">
+                  {account.role} {account.holder}
+                </p>
+                <p class="gift__number">
+                  {account.bank} {account.number}
+                </p>
+              </div>
+              <button class="btn" type="button" data-copy={account.number} data-copy-label="계좌번호가 복사되었어요">
+                복사
+              </button>
+            </li>
+          ))}
+        </ul>
+      </details>
+    </section>
+  )
+}
+
+<style>
+  .gift {
+    padding: 0;
+  }
+  .gift__summary {
+    padding: 16px 20px;
+    cursor: pointer;
+    font-weight: 700;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .gift__summary::-webkit-details-marker {
+    display: none;
+  }
+  .gift__summary::after {
+    content: '＋';
+    color: var(--accent-deep);
+  }
+  .gift[open] .gift__summary::after {
+    content: '－';
+  }
+  .gift__list {
+    list-style: none;
+    margin: 0;
+    padding: 0 20px 8px;
+    border-top: 1px solid var(--line);
+  }
+  .gift__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+  }
+  .gift__item + .gift__item {
+    border-top: 1px dashed var(--line);
+  }
+  .gift__role {
+    margin: 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .gift__number {
+    margin: 2px 0 0;
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+  }
+  .gift__item .btn {
+    min-height: 38px;
+    padding: 6px 14px;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+</style>

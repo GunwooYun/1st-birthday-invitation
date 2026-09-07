@@ -1,0 +1,93 @@
+---
+import { Picture, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import SectionTitle from './SectionTitle.astro';
+
+const LIGHTBOX_MAX_WIDTH = 1080;
+
+const modules = import.meta.glob<ImageMetadata>('../assets/photos/gallery-*.{jpg,jpeg,png,webp}', {
+  eager: true,
+  import: 'default',
+});
+const photos = Object.entries(modules)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([, image]) => image);
+
+// Full-size (lightbox) variants generated at build time.
+const fullSizes = await Promise.all(
+  photos.map((image) => getImage({ src: image, format: 'webp', width: Math.min(LIGHTBOX_MAX_WIDTH, image.width) })),
+);
+---
+
+<section class="section reveal">
+  <SectionTitle eyebrow="Gallery" title="소은이의 순간들" />
+  <div class="gallery" data-gallery>
+    {
+      photos.map((image, i) => {
+        const full = fullSizes[i]!;
+        return (
+          <a
+            class="gallery__item"
+            href={full.src}
+            data-pswp-width={full.attributes.width}
+            data-pswp-height={full.attributes.height}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Picture
+              src={image}
+              formats={['webp']}
+              widths={[320, 640]}
+              sizes="(max-width: 430px) 50vw, 215px"
+              alt={`갤러리 사진 ${i + 1}`}
+              loading="lazy"
+            />
+          </a>
+        );
+      })
+    }
+  </div>
+</section>
+
+<script>
+  import 'photoswipe/style.css';
+
+  async function initLightbox(): Promise<void> {
+    const gallery = document.querySelector<HTMLElement>('[data-gallery]');
+    if (!gallery) return;
+    const { default: PhotoSwipeLightbox } = await import('photoswipe/lightbox');
+    const lightbox = new PhotoSwipeLightbox({
+      gallery,
+      children: 'a',
+      pswpModule: () => import('photoswipe'),
+      closeTitle: '닫기',
+      zoomTitle: '확대',
+      arrowPrevTitle: '이전',
+      arrowNextTitle: '다음',
+    });
+    lightbox.init();
+  }
+  void initLightbox();
+</script>
+
+<style>
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .gallery__item {
+    display: block;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .gallery__item :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  .gallery__item:active :global(img) {
+    transform: scale(1.03);
+  }
+</style>
