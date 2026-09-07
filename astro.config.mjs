@@ -13,15 +13,6 @@ export default defineConfig({
     schema: {
       // Public (embedded in the client bundle by design; restricted by domain on the provider side).
       PUBLIC_KAKAO_JS_KEY: envField.string({ context: 'client', access: 'public', optional: true, default: '' }),
-      PUBLIC_FIREBASE_API_KEY: envField.string({ context: 'client', access: 'public', optional: true, default: '' }),
-      PUBLIC_FIREBASE_AUTH_DOMAIN: envField.string({
-        context: 'client',
-        access: 'public',
-        optional: true,
-        default: '',
-      }),
-      PUBLIC_FIREBASE_PROJECT_ID: envField.string({ context: 'client', access: 'public', optional: true, default: '' }),
-      PUBLIC_FIREBASE_APP_ID: envField.string({ context: 'client', access: 'public', optional: true, default: '' }),
       // Private (read at build time only, never committed; provided via GitHub Actions secrets).
       PHONE_DAD: envField.string({ context: 'server', access: 'secret', optional: true }),
       PHONE_MOM: envField.string({ context: 'server', access: 'secret', optional: true }),

@@ -72,22 +72,10 @@ const GREETING = [
 
 const GIFT_NOTE = '참석만으로도 큰 축하가 됩니다.\n마음을 전하고 싶으신 분들을 위해 계좌번호를 남겨 둡니다.';
 
-const DOLJABI_ITEMS = [
-  { id: 'thread', label: '실', meaning: '무병장수', emoji: '🧵' },
-  { id: 'money', label: '돈', meaning: '부와 풍요', emoji: '💰' },
-  { id: 'pencil', label: '연필', meaning: '학문과 지혜', emoji: '✏️' },
-  { id: 'stethoscope', label: '청진기', meaning: '의술과 배려', emoji: '🩺' },
-  { id: 'mic', label: '마이크', meaning: '끼와 재능', emoji: '🎤' },
-  { id: 'gavel', label: '판사봉', meaning: '정의와 명예', emoji: '⚖️' },
-  { id: 'ball', label: '공', meaning: '건강과 활력', emoji: '⚽' },
-] as const;
-// NOTE: the item ids above are also whitelisted in firestore.rules — keep both lists in sync.
-
 // =====================================================================
 // Derived values — no need to edit below this line.
 // =====================================================================
 
-export type DoljabiItem = (typeof DOLJABI_ITEMS)[number];
 export type TimelineEntry = { id: 'birth' | 'hundred' | 'first'; label: string; date: string; caption: string };
 
 const KST_OFFSET_MS = 9 * 60 * 60 * 1000;
@@ -162,11 +150,6 @@ export const invitation = {
     },
     { id: 'first', label: '첫돌', date: formatDottedDate(addYears(birth, 1)), caption: '첫 번째 생일' },
   ] satisfies TimelineEntry[],
-  doljabi: {
-    title: `${BABY.name}이는 무엇을 잡을까요?`,
-    description: '돌잡이 결과를 미리 맞혀 보세요! 투표는 한 번만 가능합니다.',
-    items: DOLJABI_ITEMS,
-  },
   gift: { note: GIFT_NOTE },
   share: {
     title: `${BABY.name}이의 첫 번째 생일에 초대합니다`,

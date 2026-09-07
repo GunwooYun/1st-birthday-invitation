@@ -17,7 +17,6 @@
   },
   "dependencies": {
     "astro": "^7.3.1",
-    "firebase": "^12.18.0",
     "photoswipe": "^5.4.4"
   },
   "allowScripts": {

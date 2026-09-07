@@ -1,6 +1,6 @@
 # Implementation Plan: Soeun's 1st Birthday (돌잔치) Mobile Invitation
 
-> v0.3 — 2026-09-07 (implemented; decisions confirmed by the user). Based on `.claude/docs/research/invitation-content-ux.md`,
+> v0.4 — 2026-09-07 (implemented; guestbook + doljabi poll removed at the user's request → no Firebase, no backend). Based on `.claude/docs/research/invitation-content-ux.md`,
 > `.claude/docs/research/tech-stack-hosting.md`, and a deep-reasoning design review.
 > Hosting steps live in `.claude/docs/HOSTING.md`.
 
@@ -16,8 +16,8 @@ single maintainer, must be fast in the KakaoTalk in-app browser and iOS Safari.
 |---|-----------|---------|
 | A1 | Hosting target | **Confirmed**: user site `https://gunwooyun.github.io` (repo `GunwooYun/gunwooyun.github.io`, no `base`) |
 | A2 | Guest count | 50–150 |
-| A3 | Interactive features | **Confirmed**: RSVP (Google Form), account numbers, guestbook, doljabi poll (Firestore) — all implemented |
-| A4 | Repo visibility | **Confirmed**: private repo (requires GitHub Pro for Pages). PII still injected via secrets, never committed. |
+| A3 | Interactive features | **Revised**: RSVP (Google Form) + account numbers only. Guestbook and doljabi poll dropped (user chose to avoid Firebase). |
+| A4 | Repo visibility | **Revised**: public repo (Free plan rejected private Pages). PII injected via secrets, never committed; photos in the repo are public. |
 | A5 | Account numbers | Included behind an accordion, injected at build time from a secret (never committed) |
 | A6 | Custom domain | Not needed |
 | A7 | Content | **Confirmed**: 2027-05-09 (Sun), 빕스 은평롯데점, 윤건우/박서희. Real photos ~2027-05-03; generated pastel placeholders until then. Start time and baby's birth date still TBD. |
@@ -34,7 +34,7 @@ single maintainer, must be fast in the KakaoTalk in-app browser and iOS Safari.
 | Map | Kakao Maps JS SDK (domain-whitelisted JS key, 카카오맵 활성화 설정 ON) + **web** links `https://map.kakao.com/link/to/...` and Naver web directions | Custom schemes (`kakaomap://`, `nmap://`) are unreliable in the iOS KakaoTalk WebView; web links open the app when installed. |
 | Share | Kakao JS SDK v2 `Kakao.Share.sendDefault` + Open Graph tags + link copy | v1 `Kakao.Link` is EOL 2026-12-31. `og.jpg` (1200×630) in `public/`, absolute URL via `new URL(path, Astro.site)`. |
 | RSVP | Google Form button → Google Sheets | Zero backend, private results. |
-| Guestbook / doljabi poll | Firebase **Spark** plan, `firebase/firestore/lite` (REST, smaller bundle, lazy-loaded on scroll), Anonymous Auth, Firestore rules (`request.auth != null`, create-only, size limits, one vote per uid = vote doc id, counts aggregated client-side), `limit(50)` reads, no App Check | Spark has no billing, so abuse hits quota not cost. App Check needs GCP billing — excluded. Delete the Firebase project after the event. |
+| Guestbook / doljabi poll | **Removed** (v0.4) | User decided the two guest-write features are not worth a backend; optional doljabi/greeting questions can live in the RSVP Google Form instead. |
 | Images | `formats: ['webp']` only, gallery ≤ 1080 px, hero preloaded | AVIF slows CI for negligible gain at this size. |
 | Deploy | GitHub Actions: `actions/checkout@v7` → `withastro/action@v6` (npm) → `actions/deploy-pages@v5` | Official pattern; lockfile committed. |
 | Tooling | Node 24, npm (package-lock.json), Prettier + prettier-plugin-astro, @astrojs/check | Minimal. The Python/uv stack in CLAUDE.md does not apply to this project. |
@@ -56,7 +56,6 @@ Dropped from MVP: PIN gate (friction for elderly relatives, zero real security),
 9. **RSVP** — Google Form button with deadline
 10. **Gift note / accounts** — "축의금 대신 마음만" text or accordion with account numbers + copy
 11. **Share / footer** — KakaoTalk share, link copy
-12. *(optional, post-QA)* **Doljabi poll**, **Guestbook** — Firestore
 
 All copy/dates/URLs/photo refs come from `src/config/invitation.ts`; PII fields read from `import.meta.env` (build-time secrets).
 
@@ -66,7 +65,7 @@ All copy/dates/URLs/photo refs come from `src/config/invitation.ts`; PII fields 
 - Therefore: **either** private repo (GitHub Pro) **or** public repo with PII (phones, accounts) injected from GitHub Actions secrets at build time and never committed. Photos on the built site are public either way; pick the hero/og image accordingly (og.jpg is cached on Kakao's CDN).
 - Site-level: `<meta name="robots" content="noindex, nofollow">` + `robots.txt Disallow: /` (reduces search exposure of the site itself).
 - Kakao JS key is public by design; restrict via Web platform domain whitelist.
-- Firestore: Spark plan, Anonymous Auth, rules as in §3, delete project post-event.
+- No backend: the site holds no visitor-written data.
 - **Takedown date**: set a calendar reminder to disable Pages / make the repo private ~2–4 weeks after the event.
 
 ## 6. Performance budget
@@ -77,7 +76,7 @@ All copy/dates/URLs/photo refs come from `src/config/invitation.ts`; PII fields 
 
 ## 7. Implementation steps
 
-> Status 2026-09-07: Steps 0–8 implemented and pushed (commit ac20a29). Blocked at Pages enablement: the GitHub Free plan rejects Pages on the private repo (HTTP 422). User must upgrade to Pro or make the repo public. Remaining: Kakao/Firebase/Google Form setup by the user (docs/SETUP.md), real photos, QA on devices.
+> Status 2026-09-07: Steps 0–8 implemented; repo made public; site live at https://gunwooyun.github.io. Firebase-backed guestbook/doljabi removed. Remaining: Kakao app + Google Form + secrets by the user (docs/SETUP.md), real photos (~2027-05-03), venue confirmation, device QA.
 
 | Step | Work | Verification |
 |------|------|--------------|
@@ -92,11 +91,10 @@ All copy/dates/URLs/photo refs come from `src/config/invitation.ts`; PII fields 
 | 7 | RSVP Google Form + button; D-day countdown; account accordion with secret-injected numbers | Submission lands in Sheet; secrets absent from repo |
 | 8 | Privacy pass: noindex, robots.txt, `git log -p` grep for PII | Nothing sensitive in history |
 | 9 | QA: iOS Safari, Android Chrome, KakaoTalk in-app, Naver in-app; family review round | Checklist pass |
-| 10 | *(optional)* Firestore guestbook + doljabi poll, rules, quota check | Anonymous write works; rules deny update/delete/oversize |
 
 ## 8. Open questions for the user
 
 - GitHub username → user site or project site? (affects `site`/`base`)
 - Private repo via GitHub Pro (recommended) or public repo with secret-injected PII?
 - Event date, venue, parents' names, hero photo — available now?
-- Include account numbers? Guestbook? Doljabi poll?
+- ~~Include account numbers? Guestbook? Doljabi poll?~~ → accounts yes; guestbook/poll removed.

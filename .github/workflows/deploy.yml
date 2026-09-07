@@ -27,10 +27,6 @@ jobs:
           package-manager: npm@latest
         env:
           PUBLIC_KAKAO_JS_KEY: ${{ secrets.PUBLIC_KAKAO_JS_KEY }}
-          PUBLIC_FIREBASE_API_KEY: ${{ secrets.PUBLIC_FIREBASE_API_KEY }}
-          PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.PUBLIC_FIREBASE_AUTH_DOMAIN }}
-          PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.PUBLIC_FIREBASE_PROJECT_ID }}
-          PUBLIC_FIREBASE_APP_ID: ${{ secrets.PUBLIC_FIREBASE_APP_ID }}
           PHONE_DAD: ${{ secrets.PHONE_DAD }}
           PHONE_MOM: ${{ secrets.PHONE_MOM }}
           ACCOUNT_DAD: ${{ secrets.ACCOUNT_DAD }}
