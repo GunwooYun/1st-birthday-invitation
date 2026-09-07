@@ -34,7 +34,7 @@ single maintainer, must be fast in the KakaoTalk in-app browser and iOS Safari.
 | Map | Kakao Maps JS SDK (domain-whitelisted JS key, 카카오맵 활성화 설정 ON) + **web** links `https://map.kakao.com/link/to/...` and Naver web directions | Custom schemes (`kakaomap://`, `nmap://`) are unreliable in the iOS KakaoTalk WebView; web links open the app when installed. |
 | Share | Kakao JS SDK v2 `Kakao.Share.sendDefault` + Open Graph tags + link copy | v1 `Kakao.Link` is EOL 2026-12-31. `og.jpg` (1200×630) in `public/`, absolute URL via `new URL(path, Astro.site)`. |
 | RSVP | Google Form button → Google Sheets | Zero backend, private results. |
-| Guestbook / doljabi poll | Firebase **Spark** plan, `firebase/firestore/lite` (REST, smaller bundle, lazy-loaded on scroll), Anonymous Auth, Firestore rules (`request.auth != null`, create-only, size limits, one vote per uid via `increment(1)` counter doc), `limit(50)` reads, no App Check | Spark has no billing, so abuse hits quota not cost. App Check needs GCP billing — excluded. Delete the Firebase project after the event. |
+| Guestbook / doljabi poll | Firebase **Spark** plan, `firebase/firestore/lite` (REST, smaller bundle, lazy-loaded on scroll), Anonymous Auth, Firestore rules (`request.auth != null`, create-only, size limits, one vote per uid = vote doc id, counts aggregated client-side), `limit(50)` reads, no App Check | Spark has no billing, so abuse hits quota not cost. App Check needs GCP billing — excluded. Delete the Firebase project after the event. |
 | Images | `formats: ['webp']` only, gallery ≤ 1080 px, hero preloaded | AVIF slows CI for negligible gain at this size. |
 | Deploy | GitHub Actions: `actions/checkout@v7` → `withastro/action@v6` (npm) → `actions/deploy-pages@v5` | Official pattern; lockfile committed. |
 | Tooling | Node 24, npm (package-lock.json), Prettier + prettier-plugin-astro, @astrojs/check | Minimal. The Python/uv stack in CLAUDE.md does not apply to this project. |
@@ -76,6 +76,8 @@ All copy/dates/URLs/photo refs come from `src/config/invitation.ts`; PII fields 
 - Subset fonts; no framework runtime; `100dvh` with `100vh` fallback
 
 ## 7. Implementation steps
+
+> Status 2026-09-07: Steps 0–8 implemented and pushed (commit ac20a29). Blocked at Pages enablement: the GitHub Free plan rejects Pages on the private repo (HTTP 422). User must upgrade to Pro or make the repo public. Remaining: Kakao/Firebase/Google Form setup by the user (docs/SETUP.md), real photos, QA on devices.
 
 | Step | Work | Verification |
 |------|------|--------------|
