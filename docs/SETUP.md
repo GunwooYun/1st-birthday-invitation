@@ -50,9 +50,10 @@
 
 1. 휴대폰 사진은 **JPG로 내보내기** (iPhone HEIC는 그대로 쓸 수 없음: 설정 → 카메라 → 포맷 → 높은 호환성, 또는 공유 시 JPG 변환). 5MB가 넘으면 미리 줄여 두면 빌드가 빨라집니다.
 2. 위 파일명으로 `src/assets/photos/`에 복사 (기존 임시 이미지 덮어쓰기). 갤러리는 `gallery-07.jpg`처럼 번호를 이어 붙이면 그만큼 늘어나고, 파일을 지우면 줄어듭니다.
-3. `npm run og` → 대표 사진 가운데를 잘라 `public/og.jpg`를 만듭니다. 다른 사진을 쓰려면 `node scripts/make-og.mjs 경로/사진.jpg`.
-4. `npm run build` 후 `npm run preview`로 http://localhost:4321 에서 확인. WebP 변환·리사이즈·EXIF 회전은 빌드가 처리합니다.
-5. 커밋 → 푸시하면 자동 배포. 카카오톡 미리보기 이미지는 캐시되므로 https://developers.kakao.com/tool/debugger/sharing 에서 초기화.
+3. `npm run photos` → 회전을 픽셀에 굽고, EXIF(촬영 위치 포함)를 제거하고, 긴 변 2000px로 줄입니다. **공개 저장소이므로 커밋 전에 반드시 실행**합니다.
+4. `npm run og` → 대표 사진 전체를 흐린 배경 위에 얹어 `public/og.jpg`를 만듭니다. 다른 사진을 쓰려면 `node scripts/make-og.mjs 경로/사진.jpg`.
+5. `npm run build` 후 `npm run preview`로 http://localhost:4321 에서 확인. WebP 변환·리사이즈·EXIF 회전은 빌드가 처리합니다.
+6. 커밋 → 푸시하면 자동 배포. 카카오톡 미리보기 이미지는 캐시되므로 https://developers.kakao.com/tool/debugger/sharing 에서 초기화.
 
 주의: 저장소가 **공개**라 커밋한 사진은 github.com에서도 보이고, 지운 뒤에도 커밋 이력에 남습니다. 테스트용으로는 공개돼도 괜찮은 사진을 쓰는 편이 안전합니다.
 `npm run placeholders`는 이미 있는 파일을 건너뛰므로 실제 사진을 덮어쓰지 않습니다 (강제로 다시 만들려면 `--force`).

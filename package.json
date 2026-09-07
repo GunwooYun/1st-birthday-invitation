@@ -14,7 +14,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "placeholders": "node scripts/make-placeholders.mjs",
-    "og": "node scripts/make-og.mjs"
+    "og": "node scripts/make-og.mjs",
+    "photos": "node scripts/normalize-photos.mjs"
   },
   "dependencies": {
     "astro": "^7.3.1",
