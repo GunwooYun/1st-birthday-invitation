@@ -197,4 +197,5 @@ Bash("agy -p '한 문장으로 답변' --model gemini-3.7-flash-low")
 - Local preview of `dist/` must be served under `/1st-birthday-invitation/` (e.g. copy dist into `serve/1st-birthday-invitation` and serve `serve/`), or assets 404. `npm run preview` handles this.
 - Repo is public: committed photos are visible on github.com and stay in history.
 - Writes to `.env*` paths are blocked by a permission rule; the example env file is `env.example`. Bash heredocs in this harness halve backslashes — use the Edit tool for code containing `\n` / `\s`.
+- Hooks in `.claude/settings.json` run with `python`, not `python3`: on this Windows PC `python3` resolves to the Microsoft Store alias stub (`WindowsApps/python3`), which prints "Python" and exits 49, producing "PostToolUse:Bash hook error … Python" on every Bash call (fixed 2026-09-08). Real Python 3.13 is `python` only. If this framework is copied to macOS, switch back to `python3` or disable the Windows alias instead.
 - Stale symlink `.claude-md-astro-symlink.bak` (git-ignored) can be deleted by the user; the classifier blocks `rm CLAUDE.md`-style commands.
