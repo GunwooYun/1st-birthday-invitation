@@ -82,15 +82,15 @@ ACCOUNT_MOM
 `gh` CLI로 한 번에 넣을 수도 있습니다:
 
 ```bash
-gh secret set PUBLIC_KAKAO_JS_KEY --repo GunwooYun/gunwooyun.github.io --body "..."
+gh secret set PUBLIC_KAKAO_JS_KEY --repo GunwooYun/1st-birthday-invitation --body "..."
 ````
 
 ## 5. GitHub Pages
 
-1. 저장소 `GunwooYun/gunwooyun.github.io`는 **공개**입니다 (Free 플랜은 공개 저장소만 Pages 지원). 그래서 개인정보는 시크릿으로만 주입하고, 커밋한 사진은 github.com에서도 보인다는 점을 기억하세요.
+1. 저장소 `GunwooYun/1st-birthday-invitation`는 **공개**입니다 (Free 플랜은 공개 저장소만 Pages 지원). 그래서 개인정보는 시크릿으로만 주입하고, 커밋한 사진은 github.com에서도 보인다는 점을 기억하세요.
 2. Settings → Pages → Build and deployment → Source: **GitHub Actions**
 3. `main`에 푸시하면 `.github/workflows/deploy.yml`이 빌드·배포합니다 (Actions 탭에서 진행 확인)
-4. 배포 후 https://gunwooyun.github.io 접속 → 카카오톡으로 링크를 나에게 보내 미리보기 카드와 인앱 브라우저 확인
+4. 배포 후 https://gunwooyun.github.io/1st-birthday-invitation 접속 → 카카오톡으로 링크를 나에게 보내 미리보기 카드와 인앱 브라우저 확인
 5. 시크릿을 바꾼 뒤에는 Actions → Deploy to GitHub Pages → **Run workflow**로 재배포
 
 ## 6. 배포 후 점검

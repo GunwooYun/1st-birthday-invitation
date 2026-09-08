@@ -6,7 +6,7 @@
 
 ## 1. Repository
 
-- Repo `GunwooYun/gunwooyun.github.io` → site URL `https://gunwooyun.github.io/` (user site, no `base`).
+- Repo `GunwooYun/1st-birthday-invitation` → site URL `https://gunwooyun.github.io/1st-birthday-invitation/` (user site, no `base`).
 - Visibility: **private** (requires GitHub Pro; Pages deploys via Actions and only the built site is public). PII is supplied through Actions secrets regardless.
 
 ## 2. Astro config

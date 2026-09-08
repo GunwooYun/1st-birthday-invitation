@@ -14,7 +14,7 @@ single maintainer, must be fast in the KakaoTalk in-app browser and iOS Safari.
 
 | # | Assumption | Default |
 |---|-----------|---------|
-| A1 | Hosting target | **Confirmed**: user site `https://gunwooyun.github.io` (repo `GunwooYun/gunwooyun.github.io`, no `base`) |
+| A1 | Hosting target | **Confirmed**: project site `https://gunwooyun.github.io/1st-birthday-invitation` (repo `GunwooYun/1st-birthday-invitation`, `base` = repo name; renamed from the user site 2026-09-08) |
 | A2 | Guest count | 50–150 |
 | A3 | Interactive features | **Revised (v0.5)**: account numbers with copy only. RSVP, guestbook and doljabi poll all dropped — the user will not ask guests for attendance/headcount. |
 | A4 | Repo visibility | **Revised**: public repo (Free plan rejected private Pages). PII injected via secrets, never committed; photos in the repo are public. |
@@ -75,7 +75,7 @@ All copy/dates/URLs/photo refs come from `src/config/invitation.ts`; PII fields 
 
 ## 7. Implementation steps
 
-> Status 2026-09-07: Steps 0–8 implemented; repo made public; site live at https://gunwooyun.github.io. Firebase-backed guestbook/doljabi removed. Remaining: Kakao app + secrets by the user (docs/SETUP.md), real photos (~2027-05-03), venue confirmation, device QA.
+> Status 2026-09-07: Steps 0–8 implemented; repo made public; site live at https://gunwooyun.github.io/1st-birthday-invitation. Firebase-backed guestbook/doljabi removed. Remaining: Kakao app + secrets by the user (docs/SETUP.md), real photos (~2027-05-03), venue confirmation, device QA.
 
 | Step | Work | Verification |
 |------|------|--------------|

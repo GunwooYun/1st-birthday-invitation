@@ -1,7 +1,7 @@
 # 소은이 돌잔치 모바일 초대장
 
 2027년 5월 9일 일요일, 빕스 은평롯데점에서 열리는 소은이의 첫 생일 초대장입니다.
-GitHub Pages(`https://gunwooyun.github.io`)에 정적 사이트로 배포되며 카카오톡 링크로 공유합니다.
+GitHub Pages(`https://gunwooyun.github.io/1st-birthday-invitation`)에 정적 사이트로 배포되며 카카오톡 링크로 공유합니다.
 
 ## 구성
 

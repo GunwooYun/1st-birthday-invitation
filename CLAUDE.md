@@ -161,12 +161,12 @@ Bash("agy -p '한 문장으로 답변' --model gemini-3.7-flash-low")
 
 ### Context
 
-- Goal: single-page, mobile-first invitation site on GitHub Pages, shared via KakaoTalk. Live at https://gunwooyun.github.io.
+- Goal: single-page, mobile-first invitation site on GitHub Pages, shared via KakaoTalk. Live at https://gunwooyun.github.io/1st-birthday-invitation.
 - Key docs: `.claude/docs/PLAN.md` (plan v0.5), `.claude/docs/HOSTING.md` (English deploy notes), `docs/SETUP.md` (Korean user-facing setup guide),
   `.claude/docs/research/invitation-content-ux.md`, `.claude/docs/research/tech-stack-hosting.md`
 - Stack: Astro 7.3 (static), plain CSS, Pretendard + Gowun Dodum, PhotoSwipe, Kakao Maps/Share SDK v2 (2.7.9). Node 24, npm.
   No backend, no forms: RSVP, guestbook and doljabi poll were all removed on 2026-09-07 at the user's request; the only external service is Kakao.
-- Hosting: user site from PUBLIC repo `GunwooYun/gunwooyun.github.io` (Free plan rejected private Pages). Deploy = GitHub Actions on push to main.
+- Hosting: project site (base `/1st-birthday-invitation`) from PUBLIC repo `GunwooYun/1st-birthday-invitation` (Free plan rejected private Pages). Deploy = GitHub Actions on push to main.
 - Event: 2027-05-09 (Sun) 빕스 은평점 (롯데몰 은평점 3층, not yet booked — venue may change; edit only the EVENT/VENUE blocks in `src/config/invitation.ts`).
   Baby born 2026-05-11; parents 윤건우/박서희. Real photos ~2027-05-03; pastel placeholders via `npm run placeholders` until then.
 - Secrets (GitHub Actions): PUBLIC_KAKAO_JS_KEY, PHONE_DAD, PHONE_MOM, ACCOUNT_DAD, ACCOUNT_MOM. None registered yet; sections/buttons auto-hide when empty.

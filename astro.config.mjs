@@ -1,9 +1,11 @@
 // @ts-check
 import { defineConfig, envField } from 'astro/config';
 
-// User site: https://gunwooyun.github.io (repo GunwooYun/gunwooyun.github.io) → no `base`.
+// Project site: https://gunwooyun.github.io/1st-birthday-invitation (repo GunwooYun/1st-birthday-invitation).
+// `base` must match the repo name; every internal path goes through import.meta.env.BASE_URL or astro:assets.
 export default defineConfig({
   site: 'https://gunwooyun.github.io',
+  base: '/1st-birthday-invitation',
   output: 'static',
   trailingSlash: 'ignore',
   build: {
