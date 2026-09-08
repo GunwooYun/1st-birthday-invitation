@@ -80,6 +80,7 @@ export async function initKakaoMap(): Promise<void> {
 
   maps.load(() => {
     const draw = (lat: number, lng: number) => {
+      container.replaceChildren(); // drop the "loading" placeholder before the map renders
       const center = new maps.LatLng(lat, lng);
       const map = new maps.Map(container, { center, level: MAP_ZOOM_LEVEL });
       new maps.Marker({ map, position: center });
