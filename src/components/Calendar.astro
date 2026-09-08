@@ -2,7 +2,7 @@
 import SectionTitle from './SectionTitle.astro';
 import { invitation } from '../config/invitation';
 
-const { event } = invitation;
+const { event, venue } = invitation;
 const eventDate = new Date(event.startAt);
 // Calendar is rendered for the event month in KST.
 const KST_OFFSET_MS = 9 * 60 * 60 * 1000;
@@ -23,7 +23,7 @@ const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
 <section class="section reveal">
   <SectionTitle eyebrow="Save the Date" title={event.dateLabel} />
-  <p class="calendar__label">{event.timeLabel}</p>
+  <p class="calendar__label">{event.timeLabel} {venue.name}</p>
   <div class="calendar card" role="table" aria-label="행사 날짜 달력">
     <div class="calendar__row calendar__row--head" role="row">
       {
