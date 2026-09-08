@@ -1,6 +1,10 @@
 // =====================================================================
 // Single source of truth for all invitation content.
 //
+// HOW TO CHANGE THE GREETING TEXT
+//   Edit the `GREETING` block right below this header. A blank line starts a new
+//   paragraph; a single line break stays a line break on the page.
+//
 // HOW TO CHANGE THE VENUE OR DATE
 //   Edit only the `EVENT` and `VENUE` blocks below. Every label on the
 //   page (cover, calendar, map, directions, KakaoTalk share text, meta
@@ -9,9 +13,23 @@
 //   `npm run placeholders` after changing these, until a real image
 //   replaces public/og.jpg.
 //
-// Private values (phones, accounts) come from environment
+// Private values (phones) come from environment
 // variables — see astro.config.mjs and docs/SETUP.md.
 // =====================================================================
+
+// ---------------------------------------------------------------------
+// GREETING — 인사말 (edit freely; blank line = new paragraph)
+// ---------------------------------------------------------------------
+const GREETING = `
+처음 품에 안았던 날이 어제 같은데
+어느덧 소은이가 첫 생일을 맞이합니다.
+
+지난 일 년, 사랑으로 지켜봐 주신 분들께
+감사한 마음을 담아 작은 자리를 마련했습니다.
+
+소은이의 첫걸음을 함께 축복해 주시면
+더없이 기쁘겠습니다.
+`;
 
 // ---------------------------------------------------------------------
 // EVENT — when
@@ -60,17 +78,6 @@ const PARENTS = {
   dad: '윤건우',
   mom: '박서희',
 };
-
-// ---------------------------------------------------------------------
-// COPY — texts (edit freely)
-// ---------------------------------------------------------------------
-const GREETING = [
-  '처음 품에 안았던 날이 어제 같은데\n어느덧 소은이가 첫 생일을 맞이합니다.',
-  '지난 일 년, 사랑으로 지켜봐 주신 분들께\n감사한 마음을 담아 작은 자리를 마련했습니다.',
-  '소은이의 첫걸음을 함께 축복해 주시면\n더없이 기쁘겠습니다.',
-];
-
-const GIFT_NOTE = '참석만으로도 큰 축하가 됩니다.\n마음을 전하고 싶으신 분들을 위해 계좌번호를 남겨 둡니다.';
 
 // =====================================================================
 // Derived values — no need to edit below this line.
@@ -136,10 +143,12 @@ export const invitation = {
     dateLabel,
     timeLabel,
     title: `${BABY.name}이의 첫 번째 생일`,
-    subtitle: 'Soeun’s First Birthday',
   },
   venue: VENUE,
-  greeting: GREETING,
+  // Paragraphs split on blank lines; leading/trailing newlines in the block are ignored.
+  greeting: GREETING.trim()
+    .split(/\n\s*\n/)
+    .map((paragraph) => paragraph.trim()),
   timeline: [
     { id: 'birth', label: '탄생', date: formatDottedDate(birth), caption: '세상에 온 날' },
     {
@@ -150,7 +159,6 @@ export const invitation = {
     },
     { id: 'first', label: '첫돌', date: formatDottedDate(addYears(birth, 1)), caption: '첫 번째 생일' },
   ] satisfies TimelineEntry[],
-  gift: { note: GIFT_NOTE },
   share: {
     title: `${BABY.name}이의 첫 번째 생일에 초대합니다`,
     description: whenWhereLabel,

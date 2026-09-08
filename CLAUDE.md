@@ -169,13 +169,13 @@ Bash("agy -p '한 문장으로 답변' --model gemini-3.7-flash-low")
 - Hosting: project site (base `/1st-birthday-invitation`) from PUBLIC repo `GunwooYun/1st-birthday-invitation` (Free plan rejected private Pages). Deploy = GitHub Actions on push to main.
 - Event: 2027-05-09 (Sun) 빕스 은평점 (롯데몰 은평점 3층, not yet booked — venue may change; edit only the EVENT/VENUE blocks in `src/config/invitation.ts`).
   Baby born 2026-05-11; parents 윤건우/박서희. Real photos ~2027-05-03; pastel placeholders via `npm run placeholders` until then.
-- Secrets (GitHub Actions): PUBLIC_KAKAO_JS_KEY, PHONE_DAD, PHONE_MOM, ACCOUNT_DAD, ACCOUNT_MOM. None registered yet; sections/buttons auto-hide when empty.
+- Secrets (GitHub Actions): PUBLIC_KAKAO_JS_KEY, PHONE_DAD, PHONE_MOM (registered). Account section removed 2026-09-08; greeting is a template string at the top of invitation.ts.
 - The Python/uv/ruff/pytest toolchain in this file does NOT apply to this project. Use `npm run check` / `npm run build` / `npm run format`.
 
 ### Decisions
 
 - Astro over Vite+React/vanilla: zero-JS default + build-time image pipeline for a one-off content page.
-- PII (phones, account numbers) never committed: injected via GitHub Actions secrets at build time.
+- PII (phones) never committed: injected via GitHub Actions secrets at build time.
 - Dropped: PIN gate, BGM, base64 obfuscation (no real security, adds friction); Firebase guestbook/doljabi and Google Form RSVP (user does not want to collect anything from guests).
 - Map links use web URLs (map.kakao.com/link/search/...), not custom schemes (unreliable in iOS KakaoTalk WebView); marker via Kakao Places keyword search, coordinates only as fallback.
 - Deploy: actions/checkout@v7 → withastro/action@v6 (npm) → actions/deploy-pages@v5.

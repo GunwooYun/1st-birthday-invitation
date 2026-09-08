@@ -18,9 +18,6 @@ export default defineConfig({
       // Private (read at build time only, never committed; provided via GitHub Actions secrets).
       PHONE_DAD: envField.string({ context: 'server', access: 'secret', optional: true }),
       PHONE_MOM: envField.string({ context: 'server', access: 'secret', optional: true }),
-      // Format: "은행명|계좌번호|예금주"
-      ACCOUNT_DAD: envField.string({ context: 'server', access: 'secret', optional: true }),
-      ACCOUNT_MOM: envField.string({ context: 'server', access: 'secret', optional: true }),
     },
   },
 });

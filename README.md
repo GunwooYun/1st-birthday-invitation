@@ -5,19 +5,18 @@ GitHub Pages(`https://gunwooyun.github.io/1st-birthday-invitation`)에 정적 �
 
 ## 구성
 
-| 섹션           | 내용                                        | 데이터 출처                                              |
-| -------------- | ------------------------------------------- | -------------------------------------------------------- |
-| 커버           | 대표 사진, 제목, 날짜, 장소                 | `src/config/invitation.ts`, `src/assets/photos/hero.jpg` |
-| 인사말         | 부모 인사                                   | `invitation.greeting`                                    |
-| 아이 소개      | 이름, 출생일, 부모, 전화/문자 버튼          | `PHONE_DAD`, `PHONE_MOM` 시크릿                          |
-| 달력 · D-day   | 행사 월 달력, 카운트다운                    | `invitation.event.startAt`                               |
-| 성장 타임라인  | 탄생 → 백일 → 첫돌                          | `src/assets/photos/timeline-*.jpg`                       |
-| 갤러리         | 사진 그리드 + 라이트박스                    | `src/assets/photos/gallery-*.jpg`                        |
-| 오시는 길      | 카카오맵, 주소 복사, 길찾기 링크, 교통 안내 | `PUBLIC_KAKAO_JS_KEY`                                    |
-| 마음 전하실 곳 | 계좌번호 아코디언 + 복사                    | `ACCOUNT_DAD`, `ACCOUNT_MOM` 시크릿                      |
-| 공유           | 카카오톡 공유, 링크 복사                    | `PUBLIC_KAKAO_JS_KEY`                                    |
+| 섹션          | 내용                                        | 데이터 출처                                              |
+| ------------- | ------------------------------------------- | -------------------------------------------------------- |
+| 커버          | 대표 사진, 제목, 날짜, 장소                 | `src/config/invitation.ts`, `src/assets/photos/hero.jpg` |
+| 인사말        | 부모 인사                                   | `invitation.greeting`                                    |
+| 아이 소개     | 이름, 출생일, 부모, 전화/문자 버튼          | `PHONE_DAD`, `PHONE_MOM` 시크릿                          |
+| 달력 · D-day  | 행사 월 달력, 카운트다운                    | `invitation.event.startAt`                               |
+| 성장 타임라인 | 탄생 → 백일 → 첫돌                          | `src/assets/photos/timeline-*.jpg`                       |
+| 갤러리        | 사진 그리드 + 라이트박스                    | `src/assets/photos/gallery-*.jpg`                        |
+| 오시는 길     | 카카오맵, 주소 복사, 길찾기 링크, 교통 안내 | `PUBLIC_KAKAO_JS_KEY`                                    |
+| 공유          | 카카오톡 공유, 링크 복사                    | `PUBLIC_KAKAO_JS_KEY`                                    |
 
-전화번호·계좌번호는 저장소에 커밋하지 않고 빌드 시 환경변수로만 주입합니다.
+전화번호는 저장소에 커밋하지 않고 빌드 시 환경변수로만 주입합니다.
 카카오 키나 시크릿이 비어 있으면 해당 섹션/버튼은 자동으로 숨겨집니다. 서버나 데이터베이스는 없습니다.
 
 ## 로컬 개발

@@ -29,8 +29,6 @@ jobs:
           PUBLIC_KAKAO_JS_KEY: ${{ secrets.PUBLIC_KAKAO_JS_KEY }}
           PHONE_DAD: ${{ secrets.PHONE_DAD }}
           PHONE_MOM: ${{ secrets.PHONE_MOM }}
-          ACCOUNT_DAD: ${{ secrets.ACCOUNT_DAD }}
-          ACCOUNT_MOM: ${{ secrets.ACCOUNT_MOM }}
 
   deploy:
     needs: build

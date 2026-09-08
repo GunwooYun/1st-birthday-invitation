@@ -23,7 +23,6 @@ const { event, baby, venue } = invitation;
     </div>
   </div>
   <div class="cover__text">
-    <p class="cover__eyebrow">{event.subtitle}</p>
     <h1 class="cover__title">{event.title}</h1>
     <p class="cover__date">{event.dateLabel} · {event.timeLabel}</p>
     <p class="cover__venue">{venue.name}</p>
@@ -67,13 +66,6 @@ const { event, baby, venue } = invitation;
   .cover__text {
     padding: 28px 24px 44px;
     text-align: center;
-  }
-  .cover__eyebrow {
-    margin: 0 0 6px;
-    font-size: 12px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--accent-deep);
   }
   .cover__title {
     margin: 0 0 14px;

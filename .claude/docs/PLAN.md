@@ -18,7 +18,7 @@ single maintainer, must be fast in the KakaoTalk in-app browser and iOS Safari.
 | A2 | Guest count | 50–150 |
 | A3 | Interactive features | **Revised (v0.5)**: account numbers with copy only. RSVP, guestbook and doljabi poll all dropped — the user will not ask guests for attendance/headcount. |
 | A4 | Repo visibility | **Revised**: public repo (Free plan rejected private Pages). PII injected via secrets, never committed; photos in the repo are public. |
-| A5 | Account numbers | Included behind an accordion, injected at build time from a secret (never committed) |
+| A5 | Account numbers | **Removed (v0.6, 2026-09-08)** — user does not want a gift/account section. |
 | A6 | Custom domain | Not needed |
 | A7 | Content | **Confirmed**: 2027-05-09 (Sun), 빕스 은평롯데점, 윤건우/박서희. Real photos ~2027-05-03; generated pastel placeholders until then. Start time and baby's birth date still TBD. |
 
@@ -53,7 +53,6 @@ Dropped from MVP: PIN gate (friction for elderly relatives, zero real security),
 6. **Gallery** — 6–12 photos, lazy, PhotoSwipe lightbox
 7. **Venue & map** — Kakao map, address copy, Kakao/Naver web directions links
 8. **Transport & parking**
-10. **Gift note / accounts** — "축의금 대신 마음만" text or accordion with account numbers + copy
 11. **Share / footer** — KakaoTalk share, link copy
 
 All copy/dates/URLs/photo refs come from `src/config/invitation.ts`; PII fields read from `import.meta.env` (build-time secrets).
