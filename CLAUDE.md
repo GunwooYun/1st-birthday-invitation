@@ -159,30 +159,41 @@ Bash("agy -p '한 문장으로 답변' --model gemini-3.7-flash-low")
 
 ## Current Project: Soeun's 1st Birthday (돌잔치) Mobile Invitation
 
+### Status (2026-09-08)
+
+- **Feature-complete and live** at https://gunwooyun.github.io/1st-birthday-invitation; the user has reviewed it on a phone and is satisfied.
+- Remaining before the event: confirm start time/venue after booking (edit `EVENT`/`VENUE`), replace the test photos with final ones (~2027-05-03), clear the Kakao share cache, share the link.
+
 ### Context
 
-- Goal: single-page, mobile-first invitation site on GitHub Pages, shared via KakaoTalk. Live at https://gunwooyun.github.io/1st-birthday-invitation.
-- Key docs: `.claude/docs/PLAN.md` (plan v0.5), `.claude/docs/HOSTING.md` (English deploy notes), `docs/SETUP.md` (Korean user-facing setup guide),
-  `.claude/docs/research/invitation-content-ux.md`, `.claude/docs/research/tech-stack-hosting.md`
-- Stack: Astro 7.3 (static), plain CSS, Pretendard + Gowun Dodum, PhotoSwipe, Kakao Maps/Share SDK v2 (2.7.9). Node 24, npm.
-  No backend, no forms: RSVP, guestbook and doljabi poll were all removed on 2026-09-07 at the user's request; the only external service is Kakao.
-- Hosting: project site (base `/1st-birthday-invitation`) from PUBLIC repo `GunwooYun/1st-birthday-invitation` (Free plan rejected private Pages). Deploy = GitHub Actions on push to main.
-- Event: 2027-05-09 (Sun) 빕스 은평점 (롯데몰 은평점 3층, not yet booked — venue may change; edit only the EVENT/VENUE blocks in `src/config/invitation.ts`).
-  Baby born 2026-05-11; parents 윤건우/박서희. Real photos ~2027-05-03; pastel placeholders via `npm run placeholders` until then.
-- Secrets (GitHub Actions): PUBLIC_KAKAO_JS_KEY, PHONE_DAD, PHONE_MOM (registered). Account section removed 2026-09-08; greeting is a template string at the top of invitation.ts.
+- Goal: single-page, mobile-first invitation site on GitHub Pages, shared via KakaoTalk.
+- Sections (top → bottom): Cover (hero + party horse) → Greeting → Profile (call/SMS) → Calendar + D-day → Divider → Timeline (birth/100일/첫돌, lightbox) → Gallery (lightbox) → Divider → Venue (Kakao map, address copy, Kakao/Naver directions, transport) → Share (Kakao share, link copy, balloon horse).
+- Key docs: `README.md` (Korean, user-facing: how to edit, preview, deploy, troubleshoot — keep it current), `docs/SETUP.md` (one-time setup: Kakao app, secrets, Pages),
+  `.claude/docs/PLAN.md` (plan v0.5 + history), `.claude/docs/HOSTING.md`, `.claude/docs/research/*.md` (invitation UX, tech stack, horse character sources).
+- Stack: Astro 7.3 (static, `base: '/1st-birthday-invitation'`), plain CSS, Pretendard + Gowun Dodum, PhotoSwipe, Kakao Maps/Share SDK v2 (2.7.9). Node 24, npm. Prettier ignores CLAUDE.md/AGENTS.md.
+  No backend, no forms, no accounts: RSVP, guestbook, doljabi poll (2026-09-07) and the account/gift section (2026-09-08) were all removed at the user's request. The only external service is Kakao.
+- Hosting: project site from PUBLIC repo `GunwooYun/1st-birthday-invitation` (renamed from `gunwooyun.github.io` on 2026-09-08; Free plan rejects private Pages; the user declined a GitHub org for `1st-birthday-invitation.github.io`). Deploy = GitHub Actions on push to main; secrets are read at build time, so a secret change needs a workflow re-run.
+- Event: 2027-05-09 (Sun) 12:00 (time still a placeholder) at 빕스 은평점, 롯데몰 은평점 3층, 서울 은평구 통일로 1050, 0507-1434-5338 — not yet booked, may change. Baby 윤소은 born 2026-05-11; parents 윤건우/박서희.
+- Content lives in `src/config/invitation.ts`: editable blocks at the top (`GREETING` template string — blank line = paragraph; `EVENT`; `VENUE` incl. `mapKeyword` and `transport`; `BABY`; `PARENTS`), derived values below (date labels, timeline dates from birthDate, share/meta text).
+- Photos: `src/assets/photos/` (hero, timeline-birth/100/first, gallery-NN; currently 11 real test photos). Workflow: overwrite → `npm run photos` (bake EXIF rotation, strip metadata incl. GPS, ≤2000px) → `npm run og` (hero over blurred backdrop → public/og.jpg) → commit. `npm run placeholders` skips existing files.
+- Secrets (GitHub Actions): PUBLIC_KAKAO_JS_KEY, PHONE_DAD, PHONE_MOM — all registered. Local `.env` holds the same values (git-ignored).
 - The Python/uv/ruff/pytest toolchain in this file does NOT apply to this project. Use `npm run check` / `npm run build` / `npm run format`.
 
 ### Decisions
 
 - Astro over Vite+React/vanilla: zero-JS default + build-time image pipeline for a one-off content page.
-- PII (phones) never committed: injected via GitHub Actions secrets at build time.
-- Dropped: PIN gate, BGM, base64 obfuscation (no real security, adds friction); Firebase guestbook/doljabi and Google Form RSVP (user does not want to collect anything from guests).
+- PII (phones) never committed: injected via GitHub Actions secrets at build time. Photos are committed (user accepted a public repo).
+- Dropped: PIN gate, BGM, base64 obfuscation (no real security, adds friction); Firebase guestbook/doljabi, Google Form RSVP, account numbers (user does not want to collect or ask anything from guests).
 - Map links use web URLs (map.kakao.com/link/search/...), not custom schemes (unreliable in iOS KakaoTalk WebView); marker via Kakao Places keyword search, coordinates only as fallback.
+- Every public URL (favicon, og.jpg, canonical, share link) goes through `src/config/site.ts` (`withBase`/`absoluteUrl`) because `import.meta.env.BASE_URL` has no trailing slash.
+- Mascot: hand-drawn inline-SVG chibi horse (`src/components/Horse.astro`, variants plain/party/balloon, two legs). Alternatives B–E kept in `HorseCandidates.astro` (unused); the user compared them and chose to keep the current one.
 - Deploy: actions/checkout@v7 → withastro/action@v6 (npm) → actions/deploy-pages@v5.
 
 ### Notes
 
-- Kakao Developers (new console): domains are registered per **JavaScript key** (앱 키 → JavaScript 키 → JavaScript SDK 도메인), not under 플랫폼 → Web. `https://gunwooyun.github.io` + `http://localhost:4321` registered 2026-09-08; 카카오맵 사용 설정 ON.
-- Repo is public: committed photos are visible on github.com — remind the user before the first real-photo commit.
-- TBD from user: event start time (currently 12:00 placeholder). Timeline dates (100일/첫돌) derive from birthDate automatically.
-- Writes to `.env*` paths are blocked by a permission rule; the example env file is `env.example`.
+- Kakao Developers (new console): domains are registered per **JavaScript key** (앱 키 → JavaScript 키 → JavaScript SDK 도메인), not under 플랫폼 → Web. `https://gunwooyun.github.io` + `http://localhost:4321` registered; 카카오맵 사용 설정 ON. Domain-level, so the `/1st-birthday-invitation` subpath needs nothing extra.
+- After changing og.jpg or share text, clear the cache at https://developers.kakao.com/tool/debugger/sharing.
+- Local preview of `dist/` must be served under `/1st-birthday-invitation/` (e.g. copy dist into `serve/1st-birthday-invitation` and serve `serve/`), or assets 404. `npm run preview` handles this.
+- Repo is public: committed photos are visible on github.com and stay in history.
+- Writes to `.env*` paths are blocked by a permission rule; the example env file is `env.example`. Bash heredocs in this harness halve backslashes — use the Edit tool for code containing `\n` / `\s`.
+- Stale symlink `.claude-md-astro-symlink.bak` (git-ignored) can be deleted by the user; the classifier blocks `rm CLAUDE.md`-style commands.

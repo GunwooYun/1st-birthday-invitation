@@ -20,7 +20,7 @@ single maintainer, must be fast in the KakaoTalk in-app browser and iOS Safari.
 | A4 | Repo visibility | **Revised**: public repo (Free plan rejected private Pages). PII injected via secrets, never committed; photos in the repo are public. |
 | A5 | Account numbers | **Removed (v0.6, 2026-09-08)** — user does not want a gift/account section. |
 | A6 | Custom domain | Not needed |
-| A7 | Content | **Confirmed**: 2027-05-09 (Sun), 빕스 은평롯데점, 윤건우/박서희. Real photos ~2027-05-03; generated pastel placeholders until then. Start time and baby's birth date still TBD. |
+| A7 | Content | **Confirmed**: 2027-05-09 (Sun), 빕스 은평점 (롯데몰 은평점 3층), 윤건우/박서희, baby born 2026-05-11. Test photos in place; final photos ~2027-05-03. Start time still a 12:00 placeholder. |
 
 ## 3. Tech stack
 
