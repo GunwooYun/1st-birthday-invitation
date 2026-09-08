@@ -16,9 +16,12 @@ const ogImage = absoluteUrl(share.ogImage, Astro.site);
     <title>{meta.title}</title>
     <meta name="description" content={meta.description} />
     <meta name="robots" content="noindex, nofollow" />
-    <meta name="theme-color" content="#fff8f3" />
+    <meta name="theme-color" content="#fff7f9" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href={withBase('favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={withBase('favicon-32.png')} type="image/png" sizes="32x32" />
+    <link rel="icon" href={withBase('icon-192.png')} type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href={withBase('apple-touch-icon.png')} />
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={share.title} />
