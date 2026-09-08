@@ -145,6 +145,32 @@ gh secret set PHONE_MOM --repo GunwooYun/1st-birthday-invitation --body "010-123
 
 `src/components/Horse.astro` 안의 SVG를 고칩니다. 색은 `fill="#f8d9c6"` 같은 값이고, `variant`가 `plain` / `party`(고깔모자) / `balloon`(풍선) 세 가지입니다. 커버·구분선·푸터가 같은 컴포넌트를 쓰므로 한 번 고치면 모두 바뀝니다. 다른 스타일 후보는 `src/components/HorseCandidates.astro`에 있습니다.
 
+### 3-8. 사이트 아이콘 (파비콘)
+
+브라우저 탭과 홈 화면에 보이는 아이콘은 말 얼굴 배지이며, `public/` 폴더의 파일 네 개입니다.
+
+| 파일                          | 용도                                           |
+| ----------------------------- | ---------------------------------------------- |
+| `public/favicon.svg`          | PC·모바일 브라우저 탭 (원본, 어떤 크기든 선명) |
+| `public/favicon-32.png`       | SVG를 지원하지 않는 구형 브라우저용            |
+| `public/icon-192.png`         | 안드로이드 홈 화면 추가                        |
+| `public/apple-touch-icon.png` | iOS 홈 화면 추가 (연분홍 배경 180px)           |
+
+바꾸려면 `favicon.svg`를 고친 뒤 PNG 세 개를 다시 만듭니다.
+
+```bash
+node -e "
+const sharp=require('sharp');const svg=require('fs').readFileSync('public/favicon.svg');
+(async()=>{
+  await sharp(svg).resize(32,32).png().toFile('public/favicon-32.png');
+  await sharp(svg).resize(192,192).png().toFile('public/icon-192.png');
+  const fg=await sharp(svg).resize(150,150).png().toBuffer();
+  await sharp({create:{width:180,height:180,channels:4,background:'#fff1f4'}}).composite([{input:fg,gravity:'centre'}]).png().toFile('public/apple-touch-icon.png');
+})()"
+```
+
+아이콘은 브라우저가 오래 캐시하므로, 바꾼 뒤에는 새 탭에서 열거나 강력 새로고침(Ctrl+F5)으로 확인합니다.
+
 ---
 
 ## 4. 확인하고 배포하기
@@ -224,6 +250,7 @@ src/components/               섹션별 화면 (Cover, Greeting, Profile, Calend
 src/scripts/                  지도·공유·복사·D-day 동작
 src/styles/global.css         색·글꼴·공통 스타일
 public/og.jpg                 카카오톡 미리보기 이미지 (npm run og로 생성)
+public/favicon.svg 등         사이트 아이콘 (말 얼굴 배지, 3-8절)
 scripts/                      사진 정규화·og 생성·임시 이미지 스크립트
 .github/workflows/deploy.yml  자동 배포 설정
 docs/SETUP.md                 최초 1회 설정 (카카오 앱, 시크릿, Pages)

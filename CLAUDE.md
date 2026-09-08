@@ -186,7 +186,8 @@ Bash("agy -p '한 문장으로 답변' --model gemini-3.7-flash-low")
 - Dropped: PIN gate, BGM, base64 obfuscation (no real security, adds friction); Firebase guestbook/doljabi, Google Form RSVP, account numbers (user does not want to collect or ask anything from guests).
 - Map links use web URLs (map.kakao.com/link/search/...), not custom schemes (unreliable in iOS KakaoTalk WebView); marker via Kakao Places keyword search, coordinates only as fallback.
 - Every public URL (favicon, og.jpg, canonical, share link) goes through `src/config/site.ts` (`withBase`/`absoluteUrl`) because `import.meta.env.BASE_URL` has no trailing slash.
-- Mascot: hand-drawn inline-SVG chibi horse (`src/components/Horse.astro`, variants plain/party/balloon, two legs). Alternatives B–E kept in `HorseCandidates.astro` (unused); the user compared them and chose to keep the current one.
+- Mascot: hand-drawn inline-SVG chibi horse (`src/components/Horse.astro`, variants plain/party/balloon, two legs). Alternatives B–E kept in `HorseCandidates.astro`; the user compared them and kept the current one for the page.
+- Site icon: candidate B (horse face badge) as `public/favicon.svg` (solid ring, no sparkles — dashes smear at 16px) plus generated PNGs `favicon-32.png`, `icon-192.png`, `apple-touch-icon.png` (180px on a #fff1f4 ground); all linked from `Base.astro` via `withBase`. Astro's default `favicon.ico` was removed. Regeneration command is in README §3-8.
 - Deploy: actions/checkout@v7 → withastro/action@v6 (npm) → actions/deploy-pages@v5.
 
 ### Notes
