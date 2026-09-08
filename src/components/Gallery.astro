@@ -21,7 +21,7 @@ const fullSizes = await Promise.all(
 
 <section class="section reveal">
   <SectionTitle eyebrow="Gallery" title="소은이의 순간들" />
-  <div class="gallery" data-gallery>
+  <div class="gallery" data-lightbox>
     {
       photos.map((image, i) => {
         const full = fullSizes[i]!;
@@ -53,11 +53,11 @@ const fullSizes = await Promise.all(
   import 'photoswipe/style.css';
 
   async function initLightbox(): Promise<void> {
-    const gallery = document.querySelector<HTMLElement>('[data-gallery]');
-    if (!gallery) return;
+    if (!document.querySelector('[data-lightbox]')) return;
     const { default: PhotoSwipeLightbox } = await import('photoswipe/lightbox');
+    // One lightbox instance serves every `[data-lightbox]` container (timeline + gallery).
     const lightbox = new PhotoSwipeLightbox({
-      gallery,
+      gallery: '[data-lightbox]',
       children: 'a',
       pswpModule: () => import('photoswipe'),
       closeTitle: '닫기',

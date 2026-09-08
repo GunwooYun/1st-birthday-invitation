@@ -1,5 +1,5 @@
 ---
-import { Picture } from 'astro:assets';
+import { Picture, getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import SectionTitle from './SectionTitle.astro';
 import { invitation } from '../config/invitation';
@@ -7,23 +7,42 @@ import birth from '../assets/photos/timeline-birth.jpg';
 import hundred from '../assets/photos/timeline-100.jpg';
 import first from '../assets/photos/timeline-first.jpg';
 
+const LIGHTBOX_MAX_WIDTH = 1080;
 const images: Record<string, ImageMetadata> = { birth, hundred, first };
+const fullSizes = Object.fromEntries(
+  await Promise.all(
+    Object.entries(images).map(async ([id, image]) => [
+      id,
+      await getImage({ src: image, format: 'webp', width: Math.min(LIGHTBOX_MAX_WIDTH, image.width) }),
+    ]),
+  ),
+) as Record<string, Awaited<ReturnType<typeof getImage>>>;
 ---
 
 <section class="section section--tint reveal">
-  <SectionTitle eyebrow="Growing Up" title="소은이의 일 년" />
-  <ol class="timeline">
+  <SectionTitle eyebrow="Growing Up" title="소은이의 일년" />
+  <ol class="timeline" data-lightbox>
     {
       invitation.timeline.map((entry) => (
         <li class="timeline__item">
-          <Picture
-            src={images[entry.id]}
-            formats={['webp']}
-            widths={[320, 640]}
-            sizes="(max-width: 430px) 30vw, 130px"
-            alt={`${entry.label} 사진`}
-            class="timeline__img"
-          />
+          <a
+            class="timeline__link"
+            href={fullSizes[entry.id]!.src}
+            data-pswp-width={fullSizes[entry.id]!.attributes.width}
+            data-pswp-height={fullSizes[entry.id]!.attributes.height}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`${entry.label} 사진 크게 보기`}
+          >
+            <Picture
+              src={images[entry.id]}
+              formats={['webp']}
+              widths={[320, 640]}
+              sizes="(max-width: 430px) 30vw, 130px"
+              alt={`${entry.label} 사진`}
+              class="timeline__img"
+            />
+          </a>
           <p class="timeline__label">{entry.label}</p>
           <p class="timeline__date">{entry.date}</p>
           <p class="timeline__caption">{entry.caption}</p>
@@ -44,6 +63,9 @@ const images: Record<string, ImageMetadata> = { birth, hundred, first };
   }
   .timeline__item {
     text-align: center;
+  }
+  .timeline__link {
+    display: block;
   }
   .timeline__item :global(img) {
     width: 100%;
